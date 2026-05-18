@@ -1,0 +1,15 @@
+{
+  "name": "cozy-quest",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck"
+  },
+  "packageManager": "pnpm@10.10.0",
+  "devDependencies": {
+    "turbo": "^2.9.14"
+  }
+}

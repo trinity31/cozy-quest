@@ -1,0 +1,30 @@
+{
+  "scenes": [
+    {
+      "scene_id": "market_dawn_001",
+      "title": "새벽 시장통 광장",
+      "motif": "market",
+      "difficulty": 1,
+      "image_url": "/scenes/market_dawn_001.png",
+      "release_date": "2026-05-18",
+      "cat": {
+        "cat_id": "cat_001",
+        "name": "단팥",
+        "personality": "낮잠을 좋아하는",
+        "fullbody_image_url": "/cats/cat_001_fullbody.png",
+        "furniture_options": [
+          { "id": "f_chair_rattan", "name": "등나무 의자", "image_url": "/furniture/chair_rattan.png" },
+          { "id": "f_chair_fabric", "name": "패브릭 의자", "image_url": "/furniture/chair_fabric.png" },
+          { "id": "f_chair_rocking", "name": "흔들의자", "image_url": "/furniture/chair_rocking.png" }
+        ],
+        "parts": [
+          { "part_id": "p001_fullbody", "type": "fullbody", "x": 0.50, "y": 0.50, "radius": 0.10 },
+          { "part_id": "p001_tail", "type": "tail", "x": 0.20, "y": 0.80, "radius": 0.06 },
+          { "part_id": "p001_ears", "type": "ears", "x": 0.75, "y": 0.25, "radius": 0.06 },
+          { "part_id": "p001_paw", "type": "paw", "x": 0.50, "y": 0.90, "radius": 0.06 },
+          { "part_id": "p001_face", "type": "face", "x": 0.25, "y": 0.20, "radius": 0.06 }
+        ]
+      }
+    }
+  ]
+}

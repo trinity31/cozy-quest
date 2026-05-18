@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 모바일 풀스크린 reset */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* iOS Safari 핀치 줌/더블탭 줌 차단 (게임 자체 줌 인터랙션 Day 2) */
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+/* 이미지가 부모 컨테이너 밖으로 새지 않도록 */
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
