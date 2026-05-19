@@ -1,5 +1,7 @@
 // PRD 5.3 — localStorage 스키마 + 헬퍼
 
+import type { CatPart } from './game';
+
 export interface HitRecord {
   part_id: string;
   found_at: string;          // ISO timestamp
@@ -56,4 +58,55 @@ export function setProgress(next: UserProgress): void {
 export function clearProgress(): void {
   if (!isBrowser()) return;
   window.localStorage.removeItem(KEY);
+}
+
+// ─── 게임 로직 헬퍼 (pure) ─────────────────────────────────────────
+
+/**
+ * 해당 풍경의 첫 방문 시각을 보장. 이미 있으면 그대로, 없으면 now 기록.
+ * 반환: 갱신된 progress + 그 시점의 시작 시각(ISO).
+ */
+export function getOrCreateSceneStart(
+  progress: UserProgress,
+  sceneId: string,
+  now: Date,
+): { progress: UserProgress; startedAt: string } {
+  const existing = progress.scene_started_at[sceneId];
+  if (existing) return { progress, startedAt: existing };
+  const startedAt = now.toISOString();
+  return {
+    progress: {
+      ...progress,
+      scene_started_at: { ...progress.scene_started_at, [sceneId]: startedAt },
+    },
+    startedAt,
+  };
+}
+
+/**
+ * 발견 기록 추가. 같은 part_id가 이미 있으면 변경 없이 반환.
+ */
+export function addHit(
+  progress: UserProgress,
+  partId: string,
+  sceneStartedAtIso: string,
+  now: Date,
+): UserProgress {
+  if (progress.hits.some((h) => h.part_id === partId)) return progress;
+  const startedMs = new Date(sceneStartedAtIso).getTime();
+  const seconds = Math.max(0, Math.round((now.getTime() - startedMs) / 1000));
+  const hit: HitRecord = {
+    part_id: partId,
+    found_at: now.toISOString(),
+    seconds_to_find: seconds,
+  };
+  return { ...progress, hits: [...progress.hits, hit] };
+}
+
+/**
+ * 현재 풍경에 속한 발견 part_id 목록.
+ */
+export function getFoundPartIds(progress: UserProgress, sceneParts: CatPart[]): string[] {
+  const sceneIds = new Set(sceneParts.map((p) => p.part_id));
+  return progress.hits.filter((h) => sceneIds.has(h.part_id)).map((h) => h.part_id);
 }
