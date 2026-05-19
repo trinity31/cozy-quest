@@ -10,6 +10,7 @@ import {
   getOrCreateSceneStart,
   getProgress,
   setProgress,
+  type PartType,
   type Scene,
 } from '@cozy-quest/shared';
 import {
@@ -20,22 +21,29 @@ import {
   unlockAudio,
 } from '@/lib/feedback';
 
+const PART_LABEL: Record<PartType, string> = {
+  fullbody: '풀바디',
+  tail: '꼬리',
+  ears: '귀',
+  paw: '발',
+  face: '얼굴',
+  back: '등',
+};
+
 export function DiscoveryView({ scene }: { scene: Scene }) {
   const [foundIds, setFoundIds] = useState<string[]>([]);
-  const [recentHitId, setRecentHitId] = useState<string | null>(null);
+  const [recentHit, setRecentHit] = useState<{ id: string; type: PartType; isNew: boolean } | null>(
+    null,
+  );
   const [muted, setMutedState] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const startedAtRef = useRef<string | null>(null);
 
-  // Mount: localStorage 복원 + sceneStart 보장 (PRD 5.3)
+  // Mount: localStorage 복원 + sceneStart 보장
   useEffect(() => {
     const now = new Date();
     const progress = getProgress();
-    const { progress: next, startedAt } = getOrCreateSceneStart(
-      progress,
-      scene.scene_id,
-      now,
-    );
+    const { progress: next, startedAt } = getOrCreateSceneStart(progress, scene.scene_id, now);
     if (next !== progress) setProgress(next);
     startedAtRef.current = startedAt;
     setFoundIds(getFoundPartIds(next, scene.cat.parts));
@@ -43,23 +51,23 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
     setHydrated(true);
   }, [scene]);
 
-  // 발견 시각 펄스 (700ms 후 클리어)
+  // 토스트는 1.4s 후 자동 클리어 (toast-pop 애니메이션 길이와 일치)
   useEffect(() => {
-    if (!recentHitId) return;
-    const t = window.setTimeout(() => setRecentHitId(null), 700);
+    if (!recentHit) return;
+    const t = window.setTimeout(() => setRecentHit(null), 1400);
     return () => window.clearTimeout(t);
-  }, [recentHitId]);
+  }, [recentHit]);
 
   const discovery = useMemo(
     () => getDiscoveryState(scene.cat.parts, foundIds),
     [scene.cat.parts, foundIds],
   );
 
-  function handlePartTap(partId: string) {
+  function handlePartTap(partId: string, type: PartType) {
     unlockAudio();
     if (foundIds.includes(partId)) {
       feedbackAlreadyFound();
-      setRecentHitId(partId);
+      setRecentHit({ id: partId, type, isNew: false });
       return;
     }
     const now = new Date();
@@ -69,8 +77,8 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
     setProgress(nextProgress);
     const nextFound = [...foundIds, partId];
     setFoundIds(nextFound);
-    setRecentHitId(partId);
-    feedbackDiscovery(nextFound.length - 1); // 0-based: 방금 발견한 게 몇 번째
+    setRecentHit({ id: partId, type, isNew: true });
+    feedbackDiscovery(nextFound.length - 1);
   }
 
   function toggleMute() {
@@ -81,7 +89,7 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
   }
 
   return (
-    <main className="relative flex-1 overflow-hidden bg-black">
+    <main className="relative flex-1 overflow-hidden bg-paper">
       <TransformWrapper
         initialScale={1}
         minScale={1}
@@ -90,10 +98,7 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
         wheel={{ step: 0.2 }}
         pinch={{ step: 5 }}
       >
-        <TransformComponent
-          wrapperClass="!h-full !w-full"
-          contentClass="!h-full !w-full"
-        >
+        <TransformComponent wrapperClass="!h-full !w-full" contentClass="!h-full !w-full">
           <div className="relative aspect-[9/16] w-full select-none">
             <Image
               src={scene.image_url}
@@ -107,13 +112,13 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
 
             {scene.cat.parts.map((part) => {
               const found = foundIds.includes(part.part_id);
-              const pulse = recentHitId === part.part_id;
+              const pulse = recentHit?.id === part.part_id && recentHit.isNew;
               return (
                 <button
                   key={part.part_id}
                   type="button"
-                  aria-label={found ? `발견함: ${part.type}` : `숨은 부위 ${part.type}`}
-                  onClick={() => handlePartTap(part.part_id)}
+                  aria-label={found ? `발견함: ${PART_LABEL[part.type]}` : `숨은 부위 ${PART_LABEL[part.type]}`}
+                  onClick={() => handlePartTap(part.part_id, part.type)}
                   className="absolute rounded-full"
                   style={{
                     left: `${(part.x - part.radius) * 100}%`,
@@ -123,10 +128,10 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
                   }}
                 >
                   {found && (
-                    <span className="absolute inset-0 rounded-full ring-2 ring-amber-300/70" />
+                    <span className="absolute inset-0 rounded-full ink-line ring-2 ring-cat/40" style={{ borderColor: '#C97A3E' }} />
                   )}
                   {pulse && (
-                    <span className="absolute inset-0 animate-[ping_700ms_ease-out_1] rounded-full bg-amber-300/50" />
+                    <span className="absolute inset-0 animate-[ping_700ms_ease-out_1] rounded-full bg-cat/40" />
                   )}
                 </button>
               );
@@ -135,34 +140,38 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
         </TransformComponent>
       </TransformWrapper>
 
-      {/* 상단 헤더 */}
-      <header className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center justify-between bg-gradient-to-b from-black/60 to-transparent px-4 pb-6 pt-3">
-        <h1 className="text-sm font-medium text-white/90">{scene.title}</h1>
-        <div className="flex items-center gap-2">
-          <span className="rounded-full bg-black/40 px-3 py-1 text-xs font-medium text-white/90 backdrop-blur-sm tabular-nums">
-            {hydrated ? `${discovery.found}/${discovery.total}` : `0/${scene.cat.parts.length}`} 발견
-          </span>
-          <button
-            type="button"
-            onClick={toggleMute}
-            aria-label={muted ? '소리 켜기' : '소리 끄기'}
-            className="pointer-events-auto rounded-full bg-black/40 px-2.5 py-1 text-xs text-white/90 backdrop-blur-sm"
-          >
-            {muted ? '🔇' : '🔊'}
-          </button>
+      {/* 상단 헤더 — 5-slot 발견 카운트 + 음소거 */}
+      <header className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between px-3 pt-3">
+        <div className="pointer-events-auto">
+          <DiscoveryHeader found={hydrated ? discovery.found : 0} total={scene.cat.parts.length} />
         </div>
+        <button
+          type="button"
+          onClick={toggleMute}
+          aria-label={muted ? '소리 켜기' : '소리 끄기'}
+          className="pointer-events-auto flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text shadow-ink-1 backdrop-blur-sm"
+        >
+          <span className="text-sm">{muted ? '🔇' : '🔊'}</span>
+        </button>
       </header>
 
-      {/* 풀바디 등장 오버레이 */}
-      {discovery.isComplete && <FullbodyOverlay scene={scene} />}
+      {/* PartFoundToast — 새 부위 발견 시 잠깐 표시 */}
+      {recentHit && recentHit.isNew && (
+        <div className="pointer-events-none absolute left-1/2 top-20 z-20 -translate-x-1/2">
+          <PartFoundToast type={recentHit.type} key={recentHit.id} />
+        </div>
+      )}
 
-      {/* 하단 푸터 — Day 3에 보금자리 */}
-      <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-center bg-gradient-to-t from-black/60 to-transparent px-4 pb-6 pt-8">
+      {/* CatRevealModal — 5/5 달성 */}
+      {discovery.isComplete && <CatRevealModal scene={scene} />}
+
+      {/* 하단 푸터 — Day 3에 보금자리 라우팅 */}
+      <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-center px-4 pb-5">
         <button
           type="button"
           disabled
           aria-disabled
-          className="rounded-full bg-white/10 px-5 py-2.5 text-sm font-medium text-white/40 backdrop-blur-sm"
+          className="rounded-full ink-line bg-[#FFFBF0]/90 px-5 py-2.5 text-cap font-semibold text-text-faint shadow-ink-1 backdrop-blur-sm"
         >
           🏠 보금자리
         </button>
@@ -171,22 +180,92 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
   );
 }
 
-function FullbodyOverlay({ scene }: { scene: Scene }) {
+// ─── DiscoveryHeader — pill + 5 slot dots ───────────────────────────
+
+function DiscoveryHeader({ found, total }: { found: number; total: number }) {
   return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 px-6 backdrop-blur-sm">
-      <div className="w-full max-w-xs rounded-2xl bg-white/10 p-6 text-center">
-        <div className="relative mx-auto aspect-square w-40">
-          <Image
-            src={scene.cat.fullbody_image_url}
-            alt={scene.cat.name}
-            fill
-            className="object-contain"
-            sizes="160px"
-          />
+    <div className="flex items-center gap-2.5 rounded-full ink-line bg-[#FFFBF0]/90 px-3 py-1.5 shadow-ink-1 backdrop-blur-md">
+      <div className="flex items-baseline gap-[1px] border-r border-ink-faint pr-2 font-book leading-none">
+        <span className="text-base text-cat-deep">{found}</span>
+        <span className="text-[10px] text-text-faint">/{total}</span>
+      </div>
+      <div className="flex gap-1">
+        {Array.from({ length: total }).map((_, i) => {
+          const filled = i < found;
+          return (
+            <span
+              key={i}
+              aria-hidden
+              className={`block h-5 w-5 rounded-full transition-all duration-200 ${
+                filled
+                  ? 'ink-line bg-cat shadow-cat-1'
+                  : 'ink-line-faint bg-[#FFFBF0]'
+              }`}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ─── PartFoundToast — 손글씨 라벨 + 부위 dot ──────────────────────
+
+function PartFoundToast({ type }: { type: PartType }) {
+  return (
+    <div className="wobble flex items-center gap-2 rounded-full ink-line bg-[#FFFBF0] py-1.5 pl-1.5 pr-4 shadow-cat-1 animate-toast-pop">
+      <span className="flex h-7 w-7 items-center justify-center rounded-full ink-line bg-cat text-xs font-bold text-[#FFFBF0]">
+        ✦
+      </span>
+      <span className="font-mark text-2xl font-semibold text-cat-deep">
+        {PART_LABEL[type]} 발견!
+      </span>
+    </div>
+  );
+}
+
+// ─── CatRevealModal — 5/5 달성 시 슬라이드 업 ────────────────────
+
+function CatRevealModal({ scene }: { scene: Scene }) {
+  return (
+    <div className="absolute inset-0 z-30 flex items-end justify-center bg-ink/40 px-4 pb-8 backdrop-blur-sm sm:items-center sm:pb-0">
+      <div className="relative w-full max-w-[300px] overflow-hidden rounded-modal ink-line bg-[#FFFBF0] p-5 shadow-paper-3 animate-slide-up">
+        {/* honey 광배 */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-16 left-1/2 h-56 w-[120%] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(232,197,108,0.45)_0%,transparent_60%)]"
+        />
+        <div className="relative">
+          <p className="text-center font-mark text-xl text-cat-deep" style={{ transform: 'rotate(-2deg)' }}>
+            오늘의 고양이를 만났어요
+          </p>
+
+          <div className="mx-auto mt-3 aspect-square w-40">
+            <div className="relative h-full w-full overflow-hidden rounded-card ink-line bg-paper-soft">
+              <Image
+                src={scene.cat.fullbody_image_url}
+                alt={scene.cat.name}
+                fill
+                sizes="160px"
+                className="object-contain p-3"
+              />
+            </div>
+          </div>
+
+          <div className="mt-3 text-center">
+            <h2 className="font-book text-h1 text-text">{scene.cat.name}</h2>
+            <p className="mt-1 text-body text-text-soft">{scene.cat.personality}</p>
+          </div>
+
+          <button
+            type="button"
+            disabled
+            className="mt-4 h-12 w-full rounded-full ink-line bg-cat/60 font-semibold text-[#FFFBF0]/80 shadow-cat-1 disabled:cursor-not-allowed"
+          >
+            가구 받기
+          </button>
+          <p className="mt-2 text-center text-cap text-text-faint">Day 3 — 가구 3중 택1 예정</p>
         </div>
-        <p className="mt-3 text-lg font-medium text-white">{scene.cat.name}</p>
-        <p className="text-sm text-white/70">{scene.cat.personality}</p>
-        <p className="mt-4 text-xs text-white/50">Day 3 — 가구 3중 택1 예정</p>
       </div>
     </div>
   );
