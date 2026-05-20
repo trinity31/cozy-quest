@@ -235,8 +235,8 @@ function CatRevealModal({ scene }: { scene: Scene }) {
           </div>
 
           <div className="mt-3 text-center">
-            <h2 className="font-book text-h1 text-text">{scene.cat.name}</h2>
-            <p className="mt-1 text-body text-text-soft">{scene.cat.personality}</p>
+            <p className="text-body text-text-soft">{scene.cat.personality}</p>
+            <h2 className="mt-1 font-book text-h1 text-text">{scene.cat.name}</h2>
           </div>
 
           <button
@@ -244,9 +244,9 @@ function CatRevealModal({ scene }: { scene: Scene }) {
             disabled
             className="mt-4 h-12 w-full rounded-full ink-line bg-cat/60 font-semibold text-[#FFFBF0]/80 shadow-cat-1 disabled:cursor-not-allowed"
           >
-            가구 받기
+            선물 받기
           </button>
-          <p className="mt-2 text-center text-cap text-text-faint">Day 3 — 가구 3중 택1 예정</p>
+          <p className="mt-2 text-center text-cap text-text-faint">Day 3 — 선물 3중 택1 예정</p>
         </div>
       </div>
     </div>
