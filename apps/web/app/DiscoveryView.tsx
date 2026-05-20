@@ -128,10 +128,18 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
                   }}
                 >
                   {found && (
-                    <span className="absolute inset-0 rounded-full ink-line ring-2 ring-cat/40" style={{ borderColor: '#C97A3E' }} />
+                    <span
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        border: '4px solid #5C4128',
+                        backgroundColor: 'rgba(232, 197, 108, 0.6)',
+                        boxShadow:
+                          '0 0 0 3px #FFFBF0, 0 6px 14px rgba(92, 65, 40, 0.45)',
+                      }}
+                    />
                   )}
                   {pulse && (
-                    <span className="absolute inset-0 animate-[ping_700ms_ease-out_1] rounded-full bg-cat/40" />
+                    <span className="absolute inset-0 animate-[ping_700ms_ease-out_1] rounded-full bg-cat/60" />
                   )}
                 </button>
               );
@@ -154,13 +162,6 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
           <span className="text-sm">{muted ? '🔇' : '🔊'}</span>
         </button>
       </header>
-
-      {/* PartFoundToast — 새 부위 발견 시 잠깐 표시 */}
-      {recentHit && recentHit.isNew && (
-        <div className="pointer-events-none absolute left-1/2 top-20 z-20 -translate-x-1/2">
-          <PartFoundToast type={recentHit.type} key={recentHit.id} />
-        </div>
-      )}
 
       {/* CatRevealModal — 5/5 달성 */}
       {discovery.isComplete && <CatRevealModal scene={scene} />}
@@ -205,21 +206,6 @@ function DiscoveryHeader({ found, total }: { found: number; total: number }) {
           );
         })}
       </div>
-    </div>
-  );
-}
-
-// ─── PartFoundToast — 손글씨 라벨 + 부위 dot ──────────────────────
-
-function PartFoundToast({ type }: { type: PartType }) {
-  return (
-    <div className="wobble flex items-center gap-2 rounded-full ink-line bg-[#FFFBF0] py-1.5 pl-1.5 pr-4 shadow-cat-1 animate-toast-pop">
-      <span className="flex h-7 w-7 items-center justify-center rounded-full ink-line bg-cat text-xs font-bold text-[#FFFBF0]">
-        ✦
-      </span>
-      <span className="font-mark text-2xl font-semibold text-cat-deep">
-        {PART_LABEL[type]} 발견!
-      </span>
     </div>
   );
 }
