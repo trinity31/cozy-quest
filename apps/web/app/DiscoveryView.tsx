@@ -12,6 +12,7 @@ import {
   getFoundPartIds,
   getOrCreateSceneStart,
   getProgress,
+  getSeasonSlots,
   setProgress,
   type FurnitureOption,
   type PartType,
@@ -41,6 +42,7 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
   );
   const [muted, setMutedState] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const [alreadyClaimed, setAlreadyClaimed] = useState(false);
   const startedAtRef = useRef<string | null>(null);
 
   // Mount: localStorage 복원 + sceneStart 보장
@@ -51,6 +53,9 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
     if (next !== progress) setProgress(next);
     startedAtRef.current = startedAt;
     setFoundIds(getFoundPartIds(next, scene.cat.parts));
+    setAlreadyClaimed(
+      Boolean(getSeasonSlots(next, scene.season_id)[scene.furniture_category]),
+    );
     setMutedState(isMuted());
     setHydrated(true);
   }, [scene]);
@@ -163,8 +168,8 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
         </button>
       </header>
 
-      {/* CatRevealModal — 5/5 달성 시 등장. 선물 받기 → 가구 3중 택1로 phase 전환 */}
-      {discovery.isComplete && <RewardModal scene={scene} />}
+      {/* RewardModal — 5/5 달성 + 아직 선물 안 받았을 때만 등장 */}
+      {discovery.isComplete && !alreadyClaimed && <RewardModal scene={scene} />}
 
       {/* 하단 푸터 — 보금자리 라우팅 */}
       <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-center px-4 pb-5">
