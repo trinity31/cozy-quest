@@ -1,6 +1,6 @@
 // PRD 5.3 — localStorage 스키마 + 헬퍼
 
-import type { CatPart } from './game';
+import type { CatPart, FurnitureCategory } from './game';
 
 export interface HitRecord {
   part_id: string;
@@ -8,8 +8,13 @@ export interface HitRecord {
   seconds_to_find: number;
 }
 
+/**
+ * 한 시즌의 카테고리 슬롯 1개. 7 카테고리 × N 시즌으로 누적.
+ * GAME_RULES K.5 (v1.6).
+ */
 export interface HomeSlot {
-  slot_index: number;        // 0~4
+  season_id: string;
+  category: FurnitureCategory;
   cat_id: string;
   furniture_id: string;
   chosen_at: string;
@@ -109,4 +114,34 @@ export function addHit(
 export function getFoundPartIds(progress: UserProgress, sceneParts: CatPart[]): string[] {
   const sceneIds = new Set(sceneParts.map((p) => p.part_id));
   return progress.hits.filter((h) => sceneIds.has(h.part_id)).map((h) => h.part_id);
+}
+
+/**
+ * 시즌·카테고리 슬롯에 가구 박기. 같은 (season_id, category) 슬롯이 이미 있으면
+ * 새 furniture로 덮어쓴다 (사용자가 재선택할 수 있는 정책).
+ */
+export function addHomeSlot(
+  progress: UserProgress,
+  slot: { season_id: string; category: FurnitureCategory; cat_id: string; furniture_id: string },
+  now: Date,
+): UserProgress {
+  const next: HomeSlot = { ...slot, chosen_at: now.toISOString() };
+  const filtered = progress.home_slots.filter(
+    (s) => !(s.season_id === slot.season_id && s.category === slot.category),
+  );
+  return { ...progress, home_slots: [...filtered, next] };
+}
+
+/**
+ * 한 시즌의 카테고리별 슬롯 맵. 빈 슬롯은 undefined.
+ */
+export function getSeasonSlots(
+  progress: UserProgress,
+  seasonId: string,
+): Partial<Record<FurnitureCategory, HomeSlot>> {
+  const map: Partial<Record<FurnitureCategory, HomeSlot>> = {};
+  for (const s of progress.home_slots) {
+    if (s.season_id === seasonId) map[s.category] = s;
+  }
+  return map;
 }

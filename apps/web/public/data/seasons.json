@@ -1,0 +1,14 @@
+{
+  "seasons": [
+    {
+      "season_id": "season_001_cheese",
+      "cat_id": "cat_001",
+      "title": "치즈의 시장 일주일",
+      "room_image_url": "/rooms/season_001.png",
+      "slots": {
+        "plant": { "x": 0.62, "y": 0.62, "w": 0.26, "h": 0.18 }
+      },
+      "scene_ids": ["market_dawn_001"]
+    }
+  ]
+}

@@ -7,6 +7,9 @@
       "difficulty": 1,
       "image_url": "/scenes/market_dawn_001.png",
       "release_date": "2026-05-20",
+      "season_id": "season_001_cheese",
+      "day_in_season": 1,
+      "furniture_category": "plant",
       "cat": {
         "cat_id": "cat_001",
         "name": "치즈",
@@ -14,19 +17,19 @@
         "fullbody_image_url": "/cats/cat_001_fullbody.png",
         "furniture_options": [
           {
-            "id": "f_chair_rattan",
-            "name": "등나무 의자",
-            "image_url": "/furniture/chair_rattan.png"
+            "id": "1_plant_tulip",
+            "name": "튤립 화분",
+            "image_url": "/furniture/season_001/1_plant_tulip.png"
           },
           {
-            "id": "f_chair_fabric",
-            "name": "패브릭 의자",
-            "image_url": "/furniture/chair_fabric.png"
+            "id": "1_plant_cream_pothos",
+            "name": "크림 포토스",
+            "image_url": "/furniture/season_001/1_plant_cream_pothos.png"
           },
           {
-            "id": "f_chair_rocking",
-            "name": "흔들의자",
-            "image_url": "/furniture/chair_rocking.png"
+            "id": "1_plant_primrose_clay",
+            "name": "프림로즈 클레이",
+            "image_url": "/furniture/season_001/1_plant_primrose_clay.png"
           }
         ],
         "parts": [

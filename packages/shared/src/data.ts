@@ -1,4 +1,4 @@
-import type { Scene } from './game';
+import type { Scene, Season } from './game';
 
 /**
  * 오늘 날짜(YYYY-MM-DD, 로컬 기준)의 풍경을 반환.
@@ -7,4 +7,8 @@ import type { Scene } from './game';
 export function getTodayScene(scenes: Scene[]): Scene | null {
   const today = new Date().toISOString().split('T')[0];
   return scenes.find((s) => s.release_date === today) ?? null;
+}
+
+export function getSeason(seasons: Season[], seasonId: string): Season | null {
+  return seasons.find((s) => s.season_id === seasonId) ?? null;
 }

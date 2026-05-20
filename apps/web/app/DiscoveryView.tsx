@@ -1,15 +1,19 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import {
   addHit,
+  addHomeSlot,
   getDiscoveryState,
   getFoundPartIds,
   getOrCreateSceneStart,
   getProgress,
   setProgress,
+  type FurnitureOption,
   type PartType,
   type Scene,
 } from '@cozy-quest/shared';
@@ -159,19 +163,17 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
         </button>
       </header>
 
-      {/* CatRevealModal — 5/5 달성 */}
-      {discovery.isComplete && <CatRevealModal scene={scene} />}
+      {/* CatRevealModal — 5/5 달성 시 등장. 선물 받기 → 가구 3중 택1로 phase 전환 */}
+      {discovery.isComplete && <RewardModal scene={scene} />}
 
-      {/* 하단 푸터 — Day 3에 보금자리 라우팅 */}
+      {/* 하단 푸터 — 보금자리 라우팅 */}
       <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-center px-4 pb-5">
-        <button
-          type="button"
-          disabled
-          aria-disabled
-          className="rounded-full ink-line bg-[#FFFBF0]/90 px-5 py-2.5 text-cap font-semibold text-text-faint shadow-ink-1 backdrop-blur-sm"
+        <Link
+          href="/home"
+          className="pointer-events-auto rounded-full ink-line bg-[#FFFBF0] px-5 py-2.5 text-cap font-semibold text-text shadow-ink-1 backdrop-blur-sm"
         >
           🏠 보금자리
-        </button>
+        </Link>
       </footer>
     </main>
   );
@@ -206,48 +208,114 @@ function DiscoveryHeader({ found, total }: { found: number; total: number }) {
   );
 }
 
-// ─── CatRevealModal — 5/5 달성 시 슬라이드 업 ────────────────────
+// ─── RewardModal — reveal(고양이 만남) → pick(선물 3중 택1) ─────────
 
-function CatRevealModal({ scene }: { scene: Scene }) {
+function RewardModal({ scene }: { scene: Scene }) {
+  const router = useRouter();
+  const [phase, setPhase] = useState<'reveal' | 'pick'>('reveal');
+
+  function handleChoose(option: FurnitureOption) {
+    const next = addHomeSlot(
+      getProgress(),
+      {
+        season_id: scene.season_id,
+        category: scene.furniture_category,
+        cat_id: scene.cat.cat_id,
+        furniture_id: option.id,
+      },
+      new Date(),
+    );
+    setProgress(next);
+    router.push('/home');
+  }
+
   return (
     <div className="absolute inset-0 z-30 flex items-end justify-center bg-ink/40 px-4 pb-8 backdrop-blur-sm sm:items-center sm:pb-0">
-      <div className="relative w-full max-w-[300px] overflow-hidden rounded-modal ink-line bg-[#FFFBF0] p-5 shadow-paper-3 animate-slide-up">
-        {/* honey 광배 */}
+      <div className="relative w-full max-w-[320px] overflow-hidden rounded-modal ink-line bg-[#FFFBF0] p-5 shadow-paper-3 animate-slide-up">
         <div
           aria-hidden
           className="pointer-events-none absolute -top-16 left-1/2 h-56 w-[120%] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(232,197,108,0.45)_0%,transparent_60%)]"
         />
-        <div className="relative">
-          <p className="text-center font-mark text-xl text-cat-deep" style={{ transform: 'rotate(-2deg)' }}>
-            오늘의 고양이를 만났어요
-          </p>
+        {phase === 'reveal' ? (
+          <RevealCard scene={scene} onAdvance={() => setPhase('pick')} />
+        ) : (
+          <PickCard scene={scene} onChoose={handleChoose} />
+        )}
+      </div>
+    </div>
+  );
+}
 
-          <div className="mx-auto mt-3 aspect-square w-40">
-            <div className="relative h-full w-full overflow-hidden rounded-card ink-line bg-paper-soft">
+function RevealCard({ scene, onAdvance }: { scene: Scene; onAdvance: () => void }) {
+  return (
+    <div className="relative">
+      <p className="text-center font-mark text-xl text-cat-deep" style={{ transform: 'rotate(-2deg)' }}>
+        오늘의 고양이를 만났어요
+      </p>
+
+      <div className="mx-auto mt-3 aspect-square w-40">
+        <div className="relative h-full w-full overflow-hidden rounded-card ink-line bg-paper-soft">
+          <Image
+            src={scene.cat.fullbody_image_url}
+            alt={scene.cat.name}
+            fill
+            sizes="160px"
+            className="object-contain p-3"
+          />
+        </div>
+      </div>
+
+      <div className="mt-3 text-center">
+        <p className="text-body text-text-soft">{scene.cat.personality}</p>
+        <h2 className="mt-1 font-book text-h1 text-text">{scene.cat.name}</h2>
+      </div>
+
+      <button
+        type="button"
+        onClick={onAdvance}
+        className="mt-4 h-12 w-full rounded-full ink-line bg-cat font-semibold text-[#FFFBF0] shadow-cat-1 transition-transform active:translate-y-0.5 active:shadow-none"
+      >
+        선물 받기
+      </button>
+    </div>
+  );
+}
+
+function PickCard({
+  scene,
+  onChoose,
+}: {
+  scene: Scene;
+  onChoose: (opt: FurnitureOption) => void;
+}) {
+  return (
+    <div className="relative">
+      <p className="text-center font-mark text-xl text-cat-deep" style={{ transform: 'rotate(-2deg)' }}>
+        {scene.cat.name}가 준 선물
+      </p>
+      <p className="mt-1 text-center text-cap text-text-soft">하나만 골라 보금자리에 두세요</p>
+
+      <div className="mt-4 grid grid-cols-3 gap-2">
+        {scene.cat.furniture_options.map((opt) => (
+          <button
+            key={opt.id}
+            type="button"
+            onClick={() => onChoose(opt)}
+            aria-label={opt.name}
+            className="group flex flex-col items-center gap-1 rounded-card ink-line bg-paper-soft p-2 shadow-ink-1 transition-transform active:translate-y-0.5 active:shadow-none"
+          >
+            <div className="relative aspect-square w-full overflow-hidden rounded-md">
               <Image
-                src={scene.cat.fullbody_image_url}
-                alt={scene.cat.name}
+                src={opt.image_url}
+                alt={opt.name}
                 fill
-                sizes="160px"
-                className="object-contain p-3"
+                sizes="96px"
+                className="object-contain"
               />
             </div>
-          </div>
-
-          <div className="mt-3 text-center">
-            <p className="text-body text-text-soft">{scene.cat.personality}</p>
-            <h2 className="mt-1 font-book text-h1 text-text">{scene.cat.name}</h2>
-          </div>
-
-          <button
-            type="button"
-            disabled
-            className="mt-4 h-12 w-full rounded-full ink-line bg-cat/60 font-semibold text-[#FFFBF0]/80 shadow-cat-1 disabled:cursor-not-allowed"
-          >
-            선물 받기
+            <span className="text-cap font-semibold text-text">{opt.name}</span>
           </button>
-          <p className="mt-2 text-center text-cap text-text-faint">Day 3 — 선물 3중 택1 예정</p>
-        </div>
+        ))}
       </div>
     </div>
   );
