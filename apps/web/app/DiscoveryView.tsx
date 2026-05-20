@@ -293,7 +293,7 @@ function PickCard({
       <p className="text-center font-mark text-xl text-cat-deep" style={{ transform: 'rotate(-2deg)' }}>
         {scene.cat.name}가 준 선물
       </p>
-      <p className="mt-1 text-center text-cap text-text-soft">하나만 골라 보금자리에 두세요</p>
+      <p className="mt-1 text-center text-cap text-text-soft">하나를 고르세요</p>
 
       <div className="mt-4 grid grid-cols-3 gap-2">
         {scene.cat.furniture_options.map((opt) => (
