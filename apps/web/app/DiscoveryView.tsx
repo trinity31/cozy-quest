@@ -121,25 +121,21 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
                   onClick={() => handlePartTap(part.part_id, part.type)}
                   className="absolute rounded-full"
                   style={{
-                    left: `${(part.x - part.radius) * 100}%`,
-                    top: `${(part.y - part.radius) * 100}%`,
+                    left: `${part.x * 100}%`,
+                    top: `${part.y * 100}%`,
                     width: `${part.radius * 200}%`,
-                    height: `${part.radius * 200}%`,
+                    aspectRatio: '1',
+                    transform: 'translate(-50%, -50%)',
                   }}
                 >
                   {found && (
                     <span
                       className="absolute inset-0 rounded-full"
-                      style={{
-                        border: '4px solid #5C4128',
-                        backgroundColor: 'rgba(232, 197, 108, 0.6)',
-                        boxShadow:
-                          '0 0 0 3px #FFFBF0, 0 6px 14px rgba(92, 65, 40, 0.45)',
-                      }}
+                      style={{ border: '4px solid #FFFBF0' }}
                     />
                   )}
                   {pulse && (
-                    <span className="absolute inset-0 animate-[ping_700ms_ease-out_1] rounded-full bg-cat/60" />
+                    <span className="absolute inset-0 animate-[ping_700ms_ease-out_1] rounded-full bg-white/60" />
                   )}
                 </button>
               );
