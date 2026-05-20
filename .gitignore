@@ -5,3 +5,11 @@ dist
 *.tsbuildinfo
 .DS_Store
 .env*.local
+
+# Python content pipeline (scripts/gen_scene.py)
+.venv/
+scripts/tmp/
+scripts/__pycache__/
+__pycache__/
+*.pyc
+.gstack/
