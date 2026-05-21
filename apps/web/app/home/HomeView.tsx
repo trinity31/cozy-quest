@@ -167,7 +167,7 @@ export function HomeView({ season }: { season: Season }) {
               href="/"
               className="pointer-events-auto rounded-full ink-line bg-cat px-6 py-3 font-semibold text-[#FFFBF0] shadow-cat-1"
             >
-              다음 풍경 — {nextScene.title} →
+              다음: {nextScene.title} &gt;
             </Link>
           ) : (
             <span className="pointer-events-auto rounded-full ink-line bg-[#FFFBF0] px-5 py-2.5 text-cap font-semibold text-text-soft shadow-ink-1">
