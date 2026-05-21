@@ -43,6 +43,9 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
   const [muted, setMutedState] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [alreadyClaimed, setAlreadyClaimed] = useState(false);
+  // 5/5 영속 + 선물 미수령 상태에서 사용자가 모달 닫고 풍경 회상할 수 있게.
+  // 세션 단위 (새로고침 시 초기화 = 자동 재등장).
+  const [rewardDismissed, setRewardDismissed] = useState(false);
   const startedAtRef = useRef<string | null>(null);
 
   // Mount: localStorage 복원 + sceneStart 보장
@@ -168,11 +171,22 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
         </button>
       </header>
 
-      {/* RewardModal — 5/5 달성 + 아직 선물 안 받았을 때만 등장 */}
-      {discovery.isComplete && !alreadyClaimed && <RewardModal scene={scene} />}
+      {/* RewardModal — 5/5 달성 + 미수령 + 사용자가 닫지 않은 상태에서만 등장 */}
+      {discovery.isComplete && !alreadyClaimed && !rewardDismissed && (
+        <RewardModal scene={scene} onDismiss={() => setRewardDismissed(true)} />
+      )}
 
-      {/* 하단 푸터 — 보금자리 라우팅 */}
-      <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-center px-4 pb-5">
+      {/* 하단 푸터 — 보금자리 + (선물 미수령 시) 선물 받기 CTA */}
+      <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-center gap-2 px-4 pb-5">
+        {discovery.isComplete && !alreadyClaimed && rewardDismissed && (
+          <button
+            type="button"
+            onClick={() => setRewardDismissed(false)}
+            className="pointer-events-auto rounded-full ink-line bg-cat px-5 py-2.5 text-cap font-semibold text-[#FFFBF0] shadow-cat-1"
+          >
+            🎁 선물 받기
+          </button>
+        )}
         <Link
           href="/home"
           className="pointer-events-auto rounded-full ink-line bg-[#FFFBF0] px-5 py-2.5 text-cap font-semibold text-text shadow-ink-1 backdrop-blur-sm"
@@ -215,7 +229,7 @@ function DiscoveryHeader({ found, total }: { found: number; total: number }) {
 
 // ─── RewardModal — reveal(고양이 만남) → pick(선물 3중 택1) ─────────
 
-function RewardModal({ scene }: { scene: Scene }) {
+function RewardModal({ scene, onDismiss }: { scene: Scene; onDismiss: () => void }) {
   const router = useRouter();
   const [phase, setPhase] = useState<'reveal' | 'pick'>('reveal');
 
@@ -237,6 +251,14 @@ function RewardModal({ scene }: { scene: Scene }) {
   return (
     <div className="absolute inset-0 z-30 flex items-end justify-center bg-ink/40 px-4 pb-8 backdrop-blur-sm sm:items-center sm:pb-0">
       <div className="relative w-full max-w-[320px] overflow-hidden rounded-modal ink-line bg-[#FFFBF0] p-5 shadow-paper-3 animate-slide-up">
+        <button
+          type="button"
+          onClick={onDismiss}
+          aria-label="모달 닫기"
+          className="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full text-text-soft hover:bg-paper-soft"
+        >
+          <span className="text-lg leading-none">✕</span>
+        </button>
         <div
           aria-hidden
           className="pointer-events-none absolute -top-16 left-1/2 h-56 w-[120%] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(232,197,108,0.45)_0%,transparent_60%)]"
