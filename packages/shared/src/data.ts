@@ -26,9 +26,11 @@ export function pickActiveScene(
   progress: UserProgress,
   todayIso: string,
 ): Scene | null {
+  // release_date는 게이트(아직 풀리지 않은 미래 씬 차단), 순서는 day_in_season으로 결정.
+  // 같은 시즌 안에서는 day_in_season이 진실 — release_date가 동일/뒤집혀도 시퀀스 보장.
   const candidates = scenes
     .filter((s) => s.release_date <= todayIso)
-    .sort((a, b) => a.release_date.localeCompare(b.release_date));
+    .sort((a, b) => a.day_in_season - b.day_in_season);
   for (const s of candidates) {
     const slotted = progress.home_slots.some(
       (h) => h.season_id === s.season_id && h.category === s.furniture_category,

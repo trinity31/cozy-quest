@@ -13,7 +13,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
   const today = new Date().toISOString().split('T')[0];
   const candidates = (scenesData.scenes as Scene[])
     .filter((s) => s.release_date <= today)
-    .sort((a, b) => a.release_date.localeCompare(b.release_date));
+    .sort((a, b) => a.day_in_season - b.day_in_season);
 
   if (candidates.length === 0) {
     return <EmptyState />;

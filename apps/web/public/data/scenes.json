@@ -141,6 +141,77 @@
           }
         ]
       }
+    },
+    {
+      "scene_id": "florist_noon_003",
+      "title": "꽃집 처마",
+      "motif": "florist",
+      "difficulty": 2,
+      "image_url": "/scenes/florist_noon_003.png",
+      "release_date": "2026-05-21",
+      "season_id": "season_001_cheese",
+      "day_in_season": 3,
+      "furniture_category": "rug",
+      "cat": {
+        "cat_id": "cat_001",
+        "name": "치즈",
+        "personality": "낮잠을 좋아하는",
+        "fullbody_image_url": "/cats/cat_001_fullbody.png",
+        "furniture_options": [
+          {
+            "id": "3_rug_caramel_stripe",
+            "name": "카라멜 스트라이프",
+            "image_url": "/furniture/season_001/3_rug_01_caramel_stripe.png"
+          },
+          {
+            "id": "3_rug_braided_sage",
+            "name": "세이지 매듭",
+            "image_url": "/furniture/season_001/3_rug_02_braided_sage.png"
+          },
+          {
+            "id": "3_rug_folk_pink",
+            "name": "폴크 핑크",
+            "image_url": "/furniture/season_001/3_rug_03_folk_pink.png"
+          }
+        ],
+        "parts": [
+          {
+            "part_id": "p003_fullbody",
+            "type": "fullbody",
+            "x": 0.489,
+            "y": 0.653,
+            "radius": 0.07
+          },
+          {
+            "part_id": "p003_face",
+            "type": "face",
+            "x": 0.282,
+            "y": 0.554,
+            "radius": 0.05
+          },
+          {
+            "part_id": "p003_tail",
+            "type": "tail",
+            "x": 0.266,
+            "y": 0.875,
+            "radius": 0.05
+          },
+          {
+            "part_id": "p003_paw",
+            "type": "paw",
+            "x": 0.847,
+            "y": 0.68,
+            "radius": 0.05
+          },
+          {
+            "part_id": "p003_ears",
+            "type": "ears",
+            "x": 0.901,
+            "y": 0.231,
+            "radius": 0.05
+          }
+        ]
+      }
     }
   ]
 }

@@ -7,9 +7,10 @@
       "room_image_url": "/rooms/season_001.png",
       "slots": {
         "plant":   { "x": 0.62, "y": 0.62, "w": 0.26, "h": 0.18 },
-        "cushion": { "x": 0.35, "y": 0.74, "w": 0.20, "h": 0.14 }
+        "cushion": { "x": 0.35, "y": 0.74, "w": 0.20, "h": 0.14 },
+        "rug":     { "x": 0.50, "y": 0.80, "w": 0.42, "h": 0.15 }
       },
-      "scene_ids": ["market_dawn_001", "bakery_morning_002"]
+      "scene_ids": ["market_dawn_001", "bakery_morning_002", "florist_noon_003"]
     }
   ]
 }
