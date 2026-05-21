@@ -8,6 +8,7 @@ import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import {
   addHit,
   addHomeSlot,
+  clearProgress,
   getDiscoveryState,
   getFoundPartIds,
   getOrCreateSceneStart,
@@ -25,6 +26,8 @@ import {
   setMuted,
   unlockAudio,
 } from '@/lib/feedback';
+
+const isDev = process.env.NODE_ENV === 'development';
 
 const PART_LABEL: Record<PartType, string> = {
   fullbody: '풀바디',
@@ -100,6 +103,11 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
     if (!next) unlockAudio();
   }
 
+  function handleReset() {
+    clearProgress();
+    window.location.href = '/';
+  }
+
   return (
     <main className="relative flex-1 overflow-hidden bg-paper">
       <TransformWrapper
@@ -161,14 +169,27 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
         <div className="pointer-events-auto">
           <DiscoveryHeader found={hydrated ? discovery.found : 0} total={scene.cat.parts.length} />
         </div>
-        <button
-          type="button"
-          onClick={toggleMute}
-          aria-label={muted ? '소리 켜기' : '소리 끄기'}
-          className="pointer-events-auto flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text shadow-ink-1 backdrop-blur-sm"
-        >
-          <span className="text-sm">{muted ? '🔇' : '🔊'}</span>
-        </button>
+        <div className="pointer-events-auto flex items-center gap-2">
+          {isDev && (
+            <button
+              type="button"
+              onClick={handleReset}
+              aria-label="진척 리셋 (dev)"
+              title="진척 리셋 (dev)"
+              className="flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text shadow-ink-1 backdrop-blur-sm"
+            >
+              <span className="text-base">↻</span>
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={toggleMute}
+            aria-label={muted ? '소리 켜기' : '소리 끄기'}
+            className="flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text shadow-ink-1 backdrop-blur-sm"
+          >
+            <span className="text-sm">{muted ? '🔇' : '🔊'}</span>
+          </button>
+        </div>
       </header>
 
       {/* RewardModal — 5/5 달성 + 미수령 + 사용자가 닫지 않은 상태에서만 등장 */}
