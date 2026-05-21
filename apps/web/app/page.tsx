@@ -1,21 +1,31 @@
-import { getTodayScene, type Scene } from '@cozy-quest/shared';
+import { type Scene } from '@cozy-quest/shared';
 import scenesData from '@/public/data/scenes.json';
-import { DiscoveryView } from './DiscoveryView';
 import { PickerView } from './PickerView';
+import { SceneRouter } from './SceneRouter';
 
 interface HomePageProps {
   searchParams: { picker?: string };
 }
 
 export default function HomePage({ searchParams }: HomePageProps) {
-  const scene = getTodayScene(scenesData.scenes as Scene[]);
+  // release_date <= today 인 씬을 server에서 후보로 추리고, 활성 씬은 client에서
+  // 진척(home_slots) 기준으로 결정한다. (SceneRouter)
+  const today = new Date().toISOString().split('T')[0];
+  const candidates = (scenesData.scenes as Scene[])
+    .filter((s) => s.release_date <= today)
+    .sort((a, b) => a.release_date.localeCompare(b.release_date));
 
-  if (!scene) {
+  if (candidates.length === 0) {
     return <EmptyState />;
   }
 
   const isPicker = searchParams.picker === '1';
-  return isPicker ? <PickerView scene={scene} /> : <DiscoveryView scene={scene} />;
+  if (isPicker) {
+    // picker는 가장 최근 풀린 씬(보통 오늘) 기준
+    return <PickerView scene={candidates[candidates.length - 1]} />;
+  }
+
+  return <SceneRouter candidates={candidates} />;
 }
 
 function EmptyState() {
