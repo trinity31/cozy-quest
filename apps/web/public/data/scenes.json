@@ -70,6 +70,77 @@
           }
         ]
       }
+    },
+    {
+      "scene_id": "bakery_morning_002",
+      "title": "빵집 골목 아침",
+      "motif": "bakery",
+      "difficulty": 1,
+      "image_url": "/scenes/bakery_morning_002.png",
+      "release_date": "2026-05-21",
+      "season_id": "season_001_cheese",
+      "day_in_season": 2,
+      "furniture_category": "cushion",
+      "cat": {
+        "cat_id": "cat_001",
+        "name": "치즈",
+        "personality": "낮잠을 좋아하는",
+        "fullbody_image_url": "/cats/cat_001_fullbody.png",
+        "furniture_options": [
+          {
+            "id": "2_cushion_cream_leaf",
+            "name": "크림 잎 쿠션",
+            "image_url": "/furniture/season_001/2_cushion_01_cream_leaf.png"
+          },
+          {
+            "id": "2_cushion_terra_round",
+            "name": "테라 라운드 쿠션",
+            "image_url": "/furniture/season_001/2_cushion_02_terra_round.png"
+          },
+          {
+            "id": "2_cushion_sage_stripe",
+            "name": "세이지 스트라이프 쿠션",
+            "image_url": "/furniture/season_001/2_cushion_03_sage_stripe.png"
+          }
+        ],
+        "parts": [
+          {
+            "part_id": "p002_fullbody",
+            "type": "fullbody",
+            "x": 0.5,
+            "y": 0.5,
+            "radius": 0.07
+          },
+          {
+            "part_id": "p002_face",
+            "type": "face",
+            "x": 0.5,
+            "y": 0.15,
+            "radius": 0.05
+          },
+          {
+            "part_id": "p002_tail",
+            "type": "tail",
+            "x": 0.2,
+            "y": 0.75,
+            "radius": 0.05
+          },
+          {
+            "part_id": "p002_paw",
+            "type": "paw",
+            "x": 0.8,
+            "y": 0.5,
+            "radius": 0.05
+          },
+          {
+            "part_id": "p002_ears",
+            "type": "ears",
+            "x": 0.8,
+            "y": 0.85,
+            "radius": 0.05
+          }
+        ]
+      }
     }
   ]
 }
