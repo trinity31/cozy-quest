@@ -36,7 +36,7 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    background: #FAEFC8; /* paper-soft */
+    background: #EAD09A; /* paper-deep — 데스크탑 양옆 코지톤 (모바일 프레임 시뮬) */
     color: #3A2B1C;       /* text */
     font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
       'Apple SD Gothic Neo', 'Segoe UI', Roboto, sans-serif;
