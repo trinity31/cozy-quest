@@ -149,9 +149,9 @@ cozy-quest/
         "personality": "낮잠을 좋아하는",
         "fullbody_image_url": "/cats/cat_001_fullbody.png",
         "furniture_options": [
-          { "id": "1_plant_tulip", "name": "튤립 화분", "image_url": "/furniture/season_001/1_plant_tulip.png" },
-          { "id": "1_plant_cream_pothos", "name": "크림 포토스", "image_url": "/furniture/season_001/1_plant_cream_pothos.png" },
-          { "id": "1_plant_primrose_clay", "name": "프림로즈 클레이", "image_url": "/furniture/season_001/1_plant_primrose_clay.png" }
+          { "id": "plant_tulip", "name": "튤립 화분", "image_url": "/furniture/season_001/plant_tulip.png" },
+          { "id": "plant_cream_pothos", "name": "크림 포토스", "image_url": "/furniture/season_001/plant_cream_pothos.png" },
+          { "id": "plant_primrose_clay", "name": "프림로즈 클레이", "image_url": "/furniture/season_001/plant_primrose_clay.png" }
         ],
         "parts": [
           { "part_id": "p001_fullbody", "type": "fullbody", "x": 0.76, "y": 0.802, "radius": 0.07 },

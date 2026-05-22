@@ -17,19 +17,19 @@
         "fullbody_image_url": "/cats/cat_001_fullbody.png",
         "furniture_options": [
           {
-            "id": "1_plant_tulip",
+            "id": "plant_tulip",
             "name": "튤립 화분",
-            "image_url": "/furniture/season_001/1_plant_tulip.png"
+            "image_url": "/furniture/season_001/plant_tulip.png"
           },
           {
-            "id": "1_plant_cream_pothos",
+            "id": "plant_cream_pothos",
             "name": "크림 포토스",
-            "image_url": "/furniture/season_001/1_plant_cream_pothos.png"
+            "image_url": "/furniture/season_001/plant_cream_pothos.png"
           },
           {
-            "id": "1_plant_primrose_clay",
+            "id": "plant_primrose_clay",
             "name": "프림로즈 클레이",
-            "image_url": "/furniture/season_001/1_plant_primrose_clay.png"
+            "image_url": "/furniture/season_001/plant_primrose_clay.png"
           }
         ],
         "parts": [
@@ -80,7 +80,7 @@
       "release_date": "2026-05-21",
       "season_id": "season_001_cheese",
       "day_in_season": 2,
-      "furniture_category": "cushion",
+      "furniture_category": "rug",
       "cat": {
         "cat_id": "cat_001",
         "name": "치즈",
@@ -88,19 +88,19 @@
         "fullbody_image_url": "/cats/cat_001_fullbody.png",
         "furniture_options": [
           {
-            "id": "2_cushion_cream_leaf",
-            "name": "크림 잎 쿠션",
-            "image_url": "/furniture/season_001/2_cushion_01_cream_leaf.png"
+            "id": "rug_caramel_stripe",
+            "name": "카라멜 스트라이프",
+            "image_url": "/furniture/season_001/rug_01_caramel_stripe.png"
           },
           {
-            "id": "2_cushion_terra_round",
-            "name": "테라 라운드 쿠션",
-            "image_url": "/furniture/season_001/2_cushion_02_terra_round.png"
+            "id": "rug_braided_sage",
+            "name": "세이지 매듭",
+            "image_url": "/furniture/season_001/rug_02_braided_sage.png"
           },
           {
-            "id": "2_cushion_sage_stripe",
-            "name": "세이지 스트라이프 쿠션",
-            "image_url": "/furniture/season_001/2_cushion_03_sage_stripe.png"
+            "id": "rug_folk_pink",
+            "name": "폴크 핑크",
+            "image_url": "/furniture/season_001/rug_03_folk_pink.png"
           }
         ],
         "parts": [
@@ -151,7 +151,7 @@
       "release_date": "2026-05-21",
       "season_id": "season_001_cheese",
       "day_in_season": 3,
-      "furniture_category": "rug",
+      "furniture_category": "cushion",
       "cat": {
         "cat_id": "cat_001",
         "name": "치즈",
@@ -159,19 +159,19 @@
         "fullbody_image_url": "/cats/cat_001_fullbody.png",
         "furniture_options": [
           {
-            "id": "3_rug_caramel_stripe",
-            "name": "카라멜 스트라이프",
-            "image_url": "/furniture/season_001/3_rug_01_caramel_stripe.png"
+            "id": "cushion_cream_leaf",
+            "name": "크림 잎 쿠션",
+            "image_url": "/furniture/season_001/cushion_01_cream_leaf.png"
           },
           {
-            "id": "3_rug_braided_sage",
-            "name": "세이지 매듭",
-            "image_url": "/furniture/season_001/3_rug_02_braided_sage.png"
+            "id": "cushion_terra_round",
+            "name": "테라 라운드 쿠션",
+            "image_url": "/furniture/season_001/cushion_02_terra_round.png"
           },
           {
-            "id": "3_rug_folk_pink",
-            "name": "폴크 핑크",
-            "image_url": "/furniture/season_001/3_rug_03_folk_pink.png"
+            "id": "cushion_sage_stripe",
+            "name": "세이지 스트라이프 쿠션",
+            "image_url": "/furniture/season_001/cushion_03_sage_stripe.png"
           }
         ],
         "parts": [

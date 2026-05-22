@@ -14,7 +14,7 @@
 | 고양이          | **치즈 (Cheese)** — warm cheese-ginger tabby with white chest patch         |
 | 컬러 코드       | base `#E8945C` / stripes `#C97A3E` / chest `#FFFBF0`                        |
 | 7씬 모티프      | 시장 일주일 (시장 → 빵집 → 꽃집 → 찻집 → 어물전 → 야시장 → 우천)            |
-| 7 가구 카테고리 | plant · cushion · rug · chair · shelf · lamp · bed                          |
+| 7 가구 카테고리 | plant · rug · cushion · chair · shelf · lamp · bed (Day 1~7 순서)           |
 | 인테리어 컨셉   | **치즈의 따뜻한 시장 골목 방** — caramel orange + cream + sage + terracotta |
 
 ---
@@ -238,21 +238,21 @@ minimum 32px padding, soft watercolor base shadow only.
 --no cat, animal, second object, scenery, text, drop shadow, 3D
 ```
 
-### Day 2 · cushion (쿠션) — `furniture/cushion/*.png`
-
-| #   | 파일명                       | 핵심 묘사                                                                                            |
-| --- | ---------------------------- | ---------------------------------------------------------------------------------------------------- |
-| 01  | `cushion_01_cream_leaf.png`  | plump square linen cushion in cream #F5E5B8, small embroidered sage green #A8C49A leaf in corner     |
-| 02  | `cushion_02_terra_round.png` | round velvet-feel cushion in deep terracotta #D96B47, braided rope trim around edge                  |
-| 03  | `cushion_03_sage_stripe.png` | soft cushion with vertical stripes sage #A8C49A + cream #F5E5B8, two small tassels at bottom corners |
-
-### Day 3 · rug (러그) — `furniture/rug/*.png`
+### Day 2 · rug (러그) — `furniture/rug/*.png`
 
 | #   | 파일명                      | 핵심 묘사                                                                                          |
 | --- | --------------------------- | -------------------------------------------------------------------------------------------------- |
 | 01  | `rug_01_caramel_stripe.png` | small woven rug, cream + caramel stripes #FAEFC8 #E8945C, viewed slight angle, fringe at both ends |
 | 02  | `rug_02_braided_sage.png`   | round braided rug in sage and olive tones #A8C49A #A6BC5C, spiral weave pattern                    |
 | 03  | `rug_03_folk_pink.png`      | folk pattern rug, diamond + flower motif in pink #E8B4B8 and terracotta #D96B47 on cream ground    |
+
+### Day 3 · cushion (쿠션) — `furniture/cushion/*.png`
+
+| #   | 파일명                       | 핵심 묘사                                                                                            |
+| --- | ---------------------------- | ---------------------------------------------------------------------------------------------------- |
+| 01  | `cushion_01_cream_leaf.png`  | plump square linen cushion in cream #F5E5B8, small embroidered sage green #A8C49A leaf in corner     |
+| 02  | `cushion_02_terra_round.png` | round velvet-feel cushion in deep terracotta #D96B47, braided rope trim around edge                  |
+| 03  | `cushion_03_sage_stripe.png` | soft cushion with vertical stripes sage #A8C49A + cream #F5E5B8, two small tassels at bottom corners |
 
 ### Day 4 · chair (의자) — `furniture/chair/*.png`
 
@@ -474,8 +474,8 @@ z-order 기본: bed(1) → rug(2) → chair(3) → plant(4) → cushion(5) → s
 ### 6.2 씬별 생성 (Day 1~7)
 
 - [x] Day 1 시장통 광장 배경 + plant 3 variant
-- [ ] Day 2 빵집 골목 배경 + cushion 3 variant
-- [ ] Day 3 꽃집 처마 배경 + rug 3 variant
+- [ ] Day 2 빵집 골목 배경 + rug 3 variant
+- [ ] Day 3 꽃집 처마 배경 + cushion 3 variant
 - [ ] Day 4 찻집 정원 배경 + chair 3 variant
 - [ ] Day 5 시장 골목 배경 + shelf 3 variant 🆕
 - [ ] Day 6 달빛 야시장 배경 + lamp 3 variant
@@ -523,7 +523,7 @@ z-order 기본: bed(1) → rug(2) → chair(3) → plant(4) → cushion(5) → s
 
 | 날짜         | 작업                                                             | 목표               |
 | ------------ | ---------------------------------------------------------------- | ------------------ |
-| 5/22 금 (풀) | 합성 로직 v2 기본 코딩 + rug 3종 + 타이틀 일러스트(미드저니)     | Day 3 자산 완료    |
+| 5/22 금 (풀) | 합성 로직 v2 기본 코딩 + cushion 3종 + 타이틀 일러스트(미드저니) | Day 3 자산 완료    |
 | 5/23 토 (반) | 기획서 초안 + Day 3 합성 + 모바일 프레임 셋업                    | Day 3 dogfood 가능 |
 | 5/24 일 (반) | 기획서 본문 + 인트로 화면 코드 + BGM Suno 생성                   | 인트로 시작        |
 | 5/25 월 (풀) | 기획서 최종 검수 + **🏆 기획서 제출** + SFX 다운로드 + 로딩 화면 | 기획서 통과        |
@@ -548,12 +548,12 @@ z-order 기본: bed(1) → rug(2) → chair(3) → plant(4) → cushion(5) → s
 #### 완료
 
 - [x] Day 1 시장통 + plant 3 + 합성
-- [x] Day 2 빵집 + cushion 3 + 합성
+- [x] Day 2 빵집 + rug 3 + 합성
 - [x] Day 3 꽃집 배경
 
 #### Phase 1 남음
 
-- [ ] rug 3종 (Day 3 가구)
+- [ ] cushion 3종 (Day 3 가구)
 - [ ] Day 3 합성
 - [ ] 타이틀 일러스트 (미드저니 1장)
 - [ ] 인트로 화면 코드
