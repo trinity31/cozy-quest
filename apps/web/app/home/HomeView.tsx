@@ -13,6 +13,7 @@ import {
   type FurnitureCategory,
   type FurnitureOption,
   type Season,
+  type UserProgress,
 } from '@cozy-quest/shared';
 import scenesData from '@/public/data/scenes.json';
 import type { Scene } from '@cozy-quest/shared';
@@ -20,6 +21,36 @@ import type { Scene } from '@cozy-quest/shared';
 interface ChosenItem {
   category: FurnitureCategory;
   option: FurnitureOption;
+}
+
+// 카테고리별 micro 회전 (deg). "손으로 둔 듯" 자연스러움 — SEASON1 §11.2.
+// rug/lamp는 평/수직이라 0°, 대부분은 -1.5~+1.8° 사이.
+// cushion만 예외 — 러그 위 데코 의도로 큰 각도(시계방향).
+const SLOT_ROTATIONS: Record<FurnitureCategory, number> = {
+  plant: -1.2,
+  cushion: 25,
+  rug: 0,
+  chair: -0.8,
+  shelf: 0.5,
+  lamp: 0,
+  bed: 1.0,
+};
+
+// 이 시즌에서 가장 최근에 박힌 카테고리 1개만 등장 spring 적용.
+function pickLatestCategory(
+  progress: UserProgress,
+  seasonId: string,
+): FurnitureCategory | null {
+  let latest: FurnitureCategory | null = null;
+  let latestAt = '';
+  for (const s of progress.home_slots) {
+    if (s.season_id !== seasonId) continue;
+    if (s.chosen_at > latestAt) {
+      latestAt = s.chosen_at;
+      latest = s.category;
+    }
+  }
+  return latest;
 }
 
 /**
@@ -52,11 +83,13 @@ export function HomeView({ season }: { season: Season }) {
   const [nextScene, setNextScene] = useState<Scene | null>(null);
   const [allCleared, setAllCleared] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const [latestCat, setLatestCat] = useState<FurnitureCategory | null>(null);
 
   useEffect(() => {
     const progress = getProgress();
     const slotsMap = getSeasonSlots(progress, season.season_id);
     setChosen(buildChosenMap(season, slotsMap));
+    setLatestCat(pickLatestCategory(progress, season.season_id));
 
     // 다음 진척 풍경 계산 (이 시즌 안에서 미클리어 + release 도래한 가장 이른 씬)
     const today = new Date().toISOString().split('T')[0];
@@ -103,16 +136,22 @@ export function HomeView({ season }: { season: Season }) {
           if (!slot) return null;
           const item = chosen[cat];
           if (!item) return null;
+          const rotation = SLOT_ROTATIONS[cat];
+          const isLatest = cat === latestCat;
           return (
             <div
               key={cat}
               aria-label={item.option.name}
-              className="absolute"
+              className={`absolute ${isLatest ? 'animate-furniture-pop' : ''}`}
               style={{
                 left: `${(slot.x - slot.w / 2) * 100}%`,
                 top: `${(slot.y - slot.h / 2) * 100}%`,
                 width: `${slot.w * 100}%`,
                 height: `${slot.h * 100}%`,
+                // --slot-rot: keyframe(furniture-pop)에서 rotate 유지용
+                ['--slot-rot' as never]: `${rotation}deg`,
+                transform: `rotate(${rotation}deg)`,
+                transformOrigin: 'center',
               }}
             >
               <Image

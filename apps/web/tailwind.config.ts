@@ -110,11 +110,19 @@ const config: Config = {
           '75%': { transform: 'translateY(0) rotate(-2deg) scale(1)', opacity: '1' },
           '100%': { transform: 'translateY(-4px) rotate(-2deg) scale(0.96)', opacity: '0' },
         },
+        // 가구 등장: spring overshoot + 슬롯 고유 micro 회전 유지 (--slot-rot)
+        'furniture-pop': {
+          '0%':   { transform: 'rotate(var(--slot-rot,0deg)) scale(0.6)', opacity: '0' },
+          '60%':  { transform: 'rotate(var(--slot-rot,0deg)) scale(1.08)', opacity: '1' },
+          '100%': { transform: 'rotate(var(--slot-rot,0deg)) scale(1)', opacity: '1' },
+        },
       },
       animation: {
         sparkle: 'sparkle 1.6s ease-in-out infinite',
         'slide-up': 'slide-up 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards',
         'toast-pop': 'toast-pop 1400ms ease-out forwards',
+        // cubic-bezier(0.34, 1.56, 0.64, 1) = spring overshoot (SEASON1 §11.2)
+        'furniture-pop': 'furniture-pop 500ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
       },
     },
   },
