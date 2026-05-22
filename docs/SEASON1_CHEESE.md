@@ -63,6 +63,72 @@ exposed teeth, predator, second character, human, scenery, furniture
 
 → **부위 5장 = 1번만 만들고 7씬 전부 재활용** (PRD G.자산 재활용 룰).
 
+### 1.3 타이틀 일러스트 (인트로 화면용, 1회 생성) — v2 (2026-05-22 갱신)
+
+> 콘셉트: "치즈가 골목 햇살 아래 **잠들어 있다**. 사용자가 가장 먼저 발견해야 할 작은 detail." 게임 본질(숨은 고양이 찾기) 직결.
+>
+> v1 회고 (2026-05-22): cref 풀바디(앉아있는 자세)에 끌려 앉은 자세만 생성됨. 자세·사이즈 강제 + cref 영향 약화 필요.
+
+**용도**: [`apps/web/app/IntroView.tsx`](../apps/web/app/IntroView.tsx) 전체 배경. 9:16 컨테이너 가득 (`object-cover`). 상단 25% = 로고 overlay, 하단 25% = CTA overlay, **중앙 50%에 작은 잠든 치즈 + 코지 골목**.
+
+**저장 경로**: `apps/web/public/intro/season_001_title.png`
+
+```
+Children's storybook illustration in the style of Beatrix Potter meets
+Studio Ghibli with the graphic clarity of Luke Pearson's "Hilda".
+Hand-drawn warm-brown ink linework #5C4128, line weight ~2px with slight
+organic wobble, rounded caps. Watercolor wash on visible cream paper
+grain, three tones per area, highlights as bare paper white.
+
+Subject: a single warm cheese-ginger tabby cat named Cheese (치즈),
+fur base #E8945C with #C97A3E stripes, small white chest patch, soft
+tabby M-mark on forehead, white chin.
+
+POSE — CRITICAL: the cat is CURLED INTO A BALL, lying on its side
+fast asleep with paws tucked under, head resting peacefully on its
+own body. Top-down 3/4 angle so the round sleeping silhouette reads
+clearly. Eyes FULLY CLOSED (not sleepy, fully shut), mouth closed in
+a tiny smile, soft slow breathing. NOT sitting, NOT standing, NOT
+upright, NOT facing the camera. Deep peaceful sleep.
+
+SIZE — CRITICAL: the cat is SMALL in the composition, occupying only
+about 20-25% of the frame area (roughly the size of a small basket
+relative to the alley). The cozy alley setting fills MOST of the canvas.
+The cat is a peaceful detail tucked into the warm setting — the alley
+is the main subject, the cat is a hidden gem the viewer discovers.
+
+Setting: cozy european cobblestone alley at warm afternoon, viewed from
+slight top-down 3/4 isometric angle. Cream walls #F5E5B8, terracotta
+tile rooftops #D96B47, wooden bench, flower boxes with daisies and red
+poppies, wicker baskets, hanging brass lanterns, ceramic jars stacked
+near a doorway. Soft warm sunlight pools on the cobblestones, dappled
+shade from the rooftops. The cat sleeps curled up in a warm pool of
+sunlight near the visual center of the frame, partly framed by cozy
+objects (a basket beside, flowers above), feeling like a found surprise.
+
+Composition: 9:16 vertical canvas.
+- TOP 25% = soft warm rooftops / cream sky
+  (NEGATIVE SPACE for "Cozy Quest" logo — keep uncluttered, no main objects)
+- CENTER 50% = the cozy alley setting, with the small curled sleeping
+  cat visible as a round silhouette in a sunlit spot
+- BOTTOM 25% = soft empty cobblestone foreground
+  (NEGATIVE SPACE for "시작하기" CTA — keep uncluttered, no main objects)
+
+[STYLE_PREFIX 풀버전 — §1.1 치즈 풀바디와 동일 스타일 정의]
+
+--cref [치즈 풀바디 master URL] --cw 30
+--sref [Day 1 시장 배경 URL] --sw 1000
+--ar 9:16 --style raw --v 7
+--no sitting cat, standing cat, upright cat, awake eyes, big eyes,
+large body filling frame, cat as main subject, second cat, multiple
+cats, people, modern objects, signs with text, neon colors,
+harsh shadows, busy clutter, dark mood, scary, text overlay
+```
+
+**왜 `--cw 30`인가**: cref(`--cw 100`)는 캐릭터 일관성을 강제해서 자세까지 따라가 버림. v1에서 앉은 자세만 나온 원인. `--cw 30`은 색감·무늬는 살리고 자세는 프롬프트가 잡게 함.
+
+→ 생성 후 [`IntroView.tsx`](../apps/web/app/IntroView.tsx) 의 이미지 경로 그대로 (`/intro/season_001_title.png` 덮어쓰기) + 다운샘플 (`sips -Z 1920 ... --out ...`).
+
 ---
 
 ## 2. 7씬 배경 미드저니 프롬프트

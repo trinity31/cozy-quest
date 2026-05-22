@@ -1,5 +1,6 @@
 import { type Scene } from '@cozy-quest/shared';
 import scenesData from '@/public/data/scenes.json';
+import { IntroGate } from './IntroGate';
 import { PickerView } from './PickerView';
 import { SceneRouter } from './SceneRouter';
 
@@ -19,13 +20,16 @@ export default function HomePage({ searchParams }: HomePageProps) {
     return <EmptyState />;
   }
 
-  const isPicker = searchParams.picker === '1';
-  if (isPicker) {
-    // picker는 가장 최근 풀린 씬(보통 오늘) 기준
+  // picker는 dev/디버그 도구 — 인트로 스킵
+  if (searchParams.picker === '1') {
     return <PickerView scene={candidates[candidates.length - 1]} />;
   }
 
-  return <SceneRouter candidates={candidates} />;
+  return (
+    <IntroGate>
+      <SceneRouter candidates={candidates} />
+    </IntroGate>
+  );
 }
 
 function EmptyState() {
