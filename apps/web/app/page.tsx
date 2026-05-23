@@ -35,7 +35,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
 function EmptyState() {
   return (
     <main className="flex flex-1 items-center justify-center px-6 py-10">
-      <div className="ink-line w-full max-w-[280px] rounded-modal bg-cobble-path p-7 text-center shadow-paper-1">
+      <div className="ink-line w-full max-w-[280px] rounded-modal bg-cobble-path p-7 text-center">
         <div className="wobble mx-auto flex items-center justify-center" style={{ height: 72, width: 72 }}>
           <div className="ink-line flex h-full w-full items-center justify-center rounded-full bg-paper">
             <span className="text-2xl" aria-hidden>🌅</span>

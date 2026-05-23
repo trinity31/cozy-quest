@@ -45,7 +45,7 @@ export default function RootLayout({
         <div
           className="mx-auto flex aspect-[9/16] flex-col overflow-hidden bg-paper-soft
                      w-[min(420px,100vw,calc(96vh*9/16))]
-                     rounded-modal ink-line shadow-paper-2"
+                     rounded-modal ink-line"
         >
           {children}
         </div>

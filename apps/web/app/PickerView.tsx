@@ -84,7 +84,7 @@ export function PickerView({ scene }: { scene: Scene }) {
         {picks.map((p, i) => (
           <span
             key={`${i}-${p.x}-${p.y}`}
-            className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ink-line rounded-full bg-honey px-1.5 py-0.5 text-[10px] font-bold text-text shadow-ink-1"
+            className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ink-line rounded-full bg-honey px-1.5 py-0.5 text-[10px] font-bold text-text"
             style={{ left: `${p.x * 100}%`, top: `${p.y * 100}%` }}
           >
             {i + 1}
@@ -108,7 +108,7 @@ export function PickerView({ scene }: { scene: Scene }) {
 
       {/* 상단 패널 — 종이 톤 카드 */}
       <header className="pointer-events-none absolute inset-x-3 top-3 z-10">
-        <div className="pointer-events-auto ink-line rounded-card bg-[#FFFBF0]/95 px-3 py-2.5 shadow-ink-1 backdrop-blur-md">
+        <div className="pointer-events-auto ink-line rounded-card bg-[#FFFBF0]/95 px-3 py-2.5 backdrop-blur-md">
           <div className="flex items-center justify-between">
             <h1 className="font-book text-sm text-text">
               좌표 picker — {scene.title}
@@ -137,7 +137,7 @@ export function PickerView({ scene }: { scene: Scene }) {
           type="button"
           onClick={handleCopyAll}
           disabled={picks.length === 0}
-          className="pointer-events-auto ink-line rounded-full bg-cat px-4 py-2 text-cap font-semibold text-[#FFFBF0] shadow-cat-1 transition-all disabled:bg-paper-deep disabled:text-text-faint disabled:shadow-ink-1"
+          className="pointer-events-auto ink-line rounded-full bg-cat px-4 py-2 text-cap font-semibold text-[#FFFBF0] transition-all disabled:bg-paper-deep disabled:text-text-faint"
         >
           parts JSON 전체 복사 ({picks.length})
         </button>
@@ -145,7 +145,7 @@ export function PickerView({ scene }: { scene: Scene }) {
           type="button"
           onClick={handleReset}
           disabled={picks.length === 0}
-          className="pointer-events-auto ink-line rounded-full bg-[#FFFBF0] px-4 py-2 text-cap font-semibold text-text shadow-ink-1 disabled:text-text-faint"
+          className="pointer-events-auto ink-line rounded-full bg-[#FFFBF0] px-4 py-2 text-cap font-semibold text-text disabled:text-text-faint"
         >
           초기화
         </button>

@@ -168,7 +168,7 @@ export function HomeView({ season }: { season: Season }) {
 
       {/* 상단 헤더 — 진척 게이지 + 보조 풍경 링크 + dev 리셋 */}
       <header className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between px-3 pt-3">
-        <div className="pointer-events-auto rounded-card ink-line bg-[#FFFBF0]/95 px-3 py-2 shadow-ink-1 backdrop-blur-md">
+        <div className="pointer-events-auto rounded-card ink-line bg-[#FFFBF0]/95 px-3 py-2 backdrop-blur-md">
           <p className="font-mark text-base text-cat-deep" style={{ transform: 'rotate(-1.5deg)' }}>
             {season.title}
           </p>
@@ -184,17 +184,11 @@ export function HomeView({ season }: { season: Season }) {
               onClick={handleReset}
               aria-label="진척 리셋 (dev)"
               title="진척 리셋 (dev)"
-              className="flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text shadow-ink-1"
+              className="flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text"
             >
               <span className="text-base">↻</span>
             </button>
           )}
-          <Link
-            href="/"
-            className="flex h-10 items-center gap-1 rounded-full ink-line bg-[#FFFBF0] px-3 text-cap font-semibold text-text shadow-ink-1"
-          >
-            <span aria-hidden>←</span> 풍경
-          </Link>
         </div>
       </header>
 
@@ -204,12 +198,12 @@ export function HomeView({ season }: { season: Season }) {
           {nextScene ? (
             <Link
               href="/"
-              className="pointer-events-auto rounded-full ink-line bg-cat px-6 py-3 font-semibold text-[#FFFBF0] shadow-cat-1"
+              className="pointer-events-auto rounded-full border-[2.5px] border-ink bg-cat px-6 py-3 font-sans text-lg font-extrabold text-[#FFFBF0]"
             >
               다음: {nextScene.title}
             </Link>
           ) : (
-            <span className="pointer-events-auto rounded-full ink-line bg-[#FFFBF0] px-5 py-2.5 text-cap font-semibold text-text-soft shadow-ink-1">
+            <span className="pointer-events-auto rounded-full ink-line bg-[#FFFBF0] px-5 py-2.5 text-cap font-semibold text-text-soft">
               오늘의 진척 완료 ✓
             </span>
           )}

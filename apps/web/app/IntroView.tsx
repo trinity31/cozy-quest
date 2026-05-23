@@ -22,7 +22,7 @@ export function IntroView({ onStart }: { onStart: () => void }) {
 
       {/* 상단 로고 + 부제 카드 — 완전 불투명 paper-soft로 가독성 확보 */}
       <div className="absolute inset-x-0 top-0 z-10 flex justify-center px-8 pt-20">
-        <div className="rounded-card ink-line bg-paper-soft px-9 py-5 shadow-ink-1">
+        <div className="rounded-card ink-line bg-paper-soft px-9 py-5">
           <h1 className="text-center font-sans text-4xl font-extrabold leading-none text-cat-deep">
             Cozy Quest
           </h1>
@@ -37,7 +37,7 @@ export function IntroView({ onStart }: { onStart: () => void }) {
 
       {/* 하단 시즌 타이틀 + 시작하기 */}
       <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center gap-4 px-8 pb-8">
-        <p className="rounded-full ink-line bg-paper-soft px-5 py-1.5 font-sans text-body font-bold text-text shadow-ink-1">
+        <p className="rounded-full ink-line bg-paper-soft px-5 py-1.5 font-sans text-body font-bold text-text">
           Season 1 · 치즈의 일주일
         </p>
         <button

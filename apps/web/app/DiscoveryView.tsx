@@ -46,6 +46,9 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
   const [muted, setMutedState] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [alreadyClaimed, setAlreadyClaimed] = useState(false);
+  // 시즌 첫 만남 여부 — 가구 슬롯 0개일 때만 RevealCard("오늘의 고양이를 만났어요"),
+  // 재회(Day 2~)는 바로 PickCard로 스킵.
+  const [isFirstMeeting, setIsFirstMeeting] = useState(true);
   // 5/5 영속 + 선물 미수령 상태에서 사용자가 모달 닫고 풍경 회상할 수 있게.
   // 세션 단위 (새로고침 시 초기화 = 자동 재등장).
   const [rewardDismissed, setRewardDismissed] = useState(false);
@@ -61,6 +64,9 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
     setFoundIds(getFoundPartIds(next, scene.cat.parts));
     setAlreadyClaimed(
       Boolean(getSeasonSlots(next, scene.season_id)[scene.furniture_category]),
+    );
+    setIsFirstMeeting(
+      next.home_slots.filter((s) => s.season_id === scene.season_id).length === 0,
     );
     setMutedState(isMuted());
     setHydrated(true);
@@ -176,7 +182,7 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
               onClick={handleReset}
               aria-label="진척 리셋 (dev)"
               title="진척 리셋 (dev)"
-              className="flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text shadow-ink-1 backdrop-blur-sm"
+              className="flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text backdrop-blur-sm"
             >
               <span className="text-base">↻</span>
             </button>
@@ -185,7 +191,7 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
             type="button"
             onClick={toggleMute}
             aria-label={muted ? '소리 켜기' : '소리 끄기'}
-            className="flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text shadow-ink-1 backdrop-blur-sm"
+            className="flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text backdrop-blur-sm"
           >
             <span className="text-sm">{muted ? '🔇' : '🔊'}</span>
           </button>
@@ -194,7 +200,11 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
 
       {/* RewardModal — 5/5 달성 + 미수령 + 사용자가 닫지 않은 상태에서만 등장 */}
       {discovery.isComplete && !alreadyClaimed && !rewardDismissed && (
-        <RewardModal scene={scene} onDismiss={() => setRewardDismissed(true)} />
+        <RewardModal
+          scene={scene}
+          isFirstMeeting={isFirstMeeting}
+          onDismiss={() => setRewardDismissed(true)}
+        />
       )}
 
       {/* 하단 푸터 — 보금자리 + (선물 미수령 시) 선물 받기 CTA */}
@@ -203,14 +213,14 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
           <button
             type="button"
             onClick={() => setRewardDismissed(false)}
-            className="pointer-events-auto rounded-full ink-line bg-cat px-5 py-2.5 text-cap font-semibold text-[#FFFBF0] shadow-cat-1"
+            className="pointer-events-auto rounded-full border-[2.5px] border-ink bg-cat px-5 py-2.5 text-cap font-extrabold text-[#FFFBF0]"
           >
             🎁 선물 받기
           </button>
         )}
         <Link
           href="/home"
-          className="pointer-events-auto rounded-full ink-line bg-[#FFFBF0] px-5 py-2.5 text-cap font-semibold text-text shadow-ink-1 backdrop-blur-sm"
+          className="pointer-events-auto rounded-full ink-line bg-[#FFFBF0] px-5 py-2.5 text-cap font-semibold text-text backdrop-blur-sm"
         >
           🏠 보금자리
         </Link>
@@ -223,7 +233,7 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
 
 function DiscoveryHeader({ found, total }: { found: number; total: number }) {
   return (
-    <div className="flex items-center gap-2.5 rounded-full ink-line bg-[#FFFBF0]/90 px-3 py-1.5 shadow-ink-1 backdrop-blur-md">
+    <div className="flex items-center gap-2.5 rounded-full ink-line bg-[#FFFBF0]/90 px-3 py-1.5 backdrop-blur-md">
       <div className="flex items-baseline gap-[1px] border-r border-ink-faint pr-2 font-book leading-none">
         <span className="text-base text-cat-deep">{found}</span>
         <span className="text-[10px] text-text-faint">/{total}</span>
@@ -237,7 +247,7 @@ function DiscoveryHeader({ found, total }: { found: number; total: number }) {
               aria-hidden
               className={`block h-5 w-5 rounded-full transition-all duration-200 ${
                 filled
-                  ? 'ink-line bg-cat shadow-cat-1'
+                  ? 'ink-line bg-cat'
                   : 'ink-line-faint bg-[#FFFBF0]'
               }`}
             />
@@ -250,9 +260,20 @@ function DiscoveryHeader({ found, total }: { found: number; total: number }) {
 
 // ─── RewardModal — reveal(고양이 만남) → pick(선물 3중 택1) ─────────
 
-function RewardModal({ scene, onDismiss }: { scene: Scene; onDismiss: () => void }) {
+function RewardModal({
+  scene,
+  isFirstMeeting,
+  onDismiss,
+}: {
+  scene: Scene;
+  isFirstMeeting: boolean;
+  onDismiss: () => void;
+}) {
   const router = useRouter();
-  const [phase, setPhase] = useState<'reveal' | 'pick'>('reveal');
+  // 첫 만남(시즌 슬롯 0개)만 reveal부터, 재회는 pick으로 바로
+  const [phase, setPhase] = useState<'reveal' | 'pick'>(
+    isFirstMeeting ? 'reveal' : 'pick',
+  );
 
   function handleChoose(option: FurnitureOption) {
     const next = addHomeSlot(
@@ -271,7 +292,7 @@ function RewardModal({ scene, onDismiss }: { scene: Scene; onDismiss: () => void
 
   return (
     <div className="absolute inset-0 z-30 flex items-end justify-center bg-ink/40 px-4 pb-8 backdrop-blur-sm sm:items-center sm:pb-0">
-      <div className="relative w-full max-w-[320px] overflow-hidden rounded-modal ink-line bg-[#FFFBF0] p-5 shadow-paper-3 animate-slide-up">
+      <div className="relative w-full max-w-[320px] overflow-hidden rounded-modal ink-line bg-[#FFFBF0] p-5 animate-slide-up">
         <button
           type="button"
           onClick={onDismiss}
@@ -297,7 +318,7 @@ function RewardModal({ scene, onDismiss }: { scene: Scene; onDismiss: () => void
 function RevealCard({ scene, onAdvance }: { scene: Scene; onAdvance: () => void }) {
   return (
     <div className="relative">
-      <p className="text-center font-mark text-xl text-cat-deep" style={{ transform: 'rotate(-2deg)' }}>
+      <p className="text-center font-sans text-lg font-bold text-cat-deep">
         오늘의 고양이를 만났어요
       </p>
 
@@ -321,7 +342,7 @@ function RevealCard({ scene, onAdvance }: { scene: Scene; onAdvance: () => void 
       <button
         type="button"
         onClick={onAdvance}
-        className="mt-4 h-12 w-full rounded-full ink-line bg-cat font-semibold text-[#FFFBF0] shadow-cat-1 transition-transform active:translate-y-0.5 active:shadow-none"
+        className="mt-4 h-14 w-full rounded-full border-[2.5px] border-ink bg-cat font-sans text-xl font-extrabold text-[#FFFBF0] transition-colors active:bg-cat-deep"
       >
         선물 받기
       </button>
@@ -338,7 +359,7 @@ function PickCard({
 }) {
   return (
     <div className="relative">
-      <p className="text-center font-mark text-xl text-cat-deep" style={{ transform: 'rotate(-2deg)' }}>
+      <p className="text-center font-sans text-lg font-bold text-cat-deep">
         {scene.cat.name}가 준 선물
       </p>
       <p className="mt-1 text-center text-cap text-text-soft">하나를 고르세요</p>
@@ -350,7 +371,7 @@ function PickCard({
             type="button"
             onClick={() => onChoose(opt)}
             aria-label={opt.name}
-            className="group flex flex-col items-center gap-1 rounded-card ink-line bg-paper-soft p-2 shadow-ink-1 transition-transform active:translate-y-0.5 active:shadow-none"
+            className="group flex flex-col items-center gap-1 rounded-card ink-line bg-paper-soft p-2 transition-colors active:bg-paper-deep"
           >
             <div className="relative aspect-square w-full overflow-hidden rounded-md">
               <Image
