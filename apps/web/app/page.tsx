@@ -1,5 +1,6 @@
-import { type Scene } from '@cozy-quest/shared';
+import { type Scene, type Season } from '@cozy-quest/shared';
 import scenesData from '@/public/data/scenes.json';
+import seasonsData from '@/public/data/seasons.json';
 import { IntroGate } from './IntroGate';
 import { PickerView } from './PickerView';
 import { SceneRouter } from './SceneRouter';
@@ -20,13 +21,17 @@ export default function HomePage({ searchParams }: HomePageProps) {
     return <EmptyState />;
   }
 
-  // picker는 dev/디버그 도구 — 인트로 스킵
+  // picker는 dev/디버그 도구 — 인트로/BGM 스킵
   if (searchParams.picker === '1') {
     return <PickerView scene={candidates[candidates.length - 1]} />;
   }
 
+  // 현재 활성 씬의 시즌 BGM URL (시즌별 다름)
+  const seasonId = candidates[0]!.season_id;
+  const season = (seasonsData.seasons as Season[]).find((s) => s.season_id === seasonId);
+
   return (
-    <IntroGate>
+    <IntroGate bgmUrl={season?.bgm_url}>
       <SceneRouter candidates={candidates} />
     </IntroGate>
   );

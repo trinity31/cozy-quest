@@ -721,17 +721,20 @@ z-order 기본: bed(1) → rug(2) → chair(3) → plant(4) → cushion(5) → s
 
 ## 10. 사운드 (BGM + SFX)
 
-### 10.1 BGM
+### 10.1 BGM — 시즌별 1곡 (2026-05-23 갱신)
 
 | 항목          | 값                                                                                                                                       |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| 곡 수         | **1곡** (시즌 1 공통)                                                                                                                    |
+| 곡 수         | **시즌별 1곡** — 시즌마다 고유 BGM. 시즌 1 = `season_001_bgm.mp3`                                                                        |
 | 길이          | 1~2분, 루프 가능                                                                                                                         |
-| 톤            | 어쿠스틱 코지 — 가벼운 ukulele/piano/kalimba, 빠르지 않은 4/4 또는 3/4                                                                   |
+| 톤            | 어쿠스틱 코지 — 가벼운 ukulele/piano/kalimba, 빠르지 않은 4/4 또는 3/4 (시즌마다 변주 가능)                                              |
 | 생성 도구     | **Suno AI** (또는 Udio)                                                                                                                  |
-| 프롬프트 후보 | "cozy lo-fi acoustic, gentle ukulele, soft piano, warm autumn afternoon, peaceful, no vocals, slow tempo 70 BPM, loopable, instrumental" |
-| 트리거        | Title 화면에서 [시작하기] 탭 시 페이드인                                                                                                 |
-| 볼륨 컨트롤   | 설정 화면 또는 상단 아이콘                                                                                                               |
+| 시즌 1 프롬프트 | "cozy lo-fi acoustic, gentle ukulele, soft piano, warm autumn afternoon, peaceful, no vocals, slow tempo 70 BPM, loopable, instrumental" |
+| 자산 경로     | `apps/web/public/audio/season_NNN_bgm.mp3` (NNN = 3자리 zero-pad)                                                                       |
+| 데이터 필드   | `seasons.json[].bgm_url` (Season 타입의 optional 필드)                                                                                  |
+| 트리거        | Title 화면에서 [시작하기] 탭 시 페이드인 (1.5초). 같은 세션 안에서 풍경↔보금자리 이동 시엔 그대로 재생 유지                            |
+| 볼륨          | 0.3 기본 (게임 SFX 안 가리게). mute 토글이 BGM·SFX·햅틱 모두 동시 토글                                                                  |
+| 구현          | `lib/feedback.ts` `playBGM(url)` / `stopBGM()`, `IntroGate`에서 트리거                                                                  |
 
 ### 10.2 SFX (5종 핵심)
 

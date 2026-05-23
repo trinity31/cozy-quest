@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { IntroView } from './IntroView';
-import { unlockAudio } from '@/lib/feedback';
+import { playBGM, unlockAudio } from '@/lib/feedback';
 
 /**
  * 인트로 게이트 — sessionStorage 기반 분기.
@@ -11,12 +11,18 @@ import { unlockAudio } from '@/lib/feedback';
  * - SSR mismatch 회피: 첫 paint = null (1프레임), useEffect 후 결정
  *
  * SEASON1_CHEESE §9 [2] Title/Intro + "BGM은 사용자 인터랙션 트리거 후 재생" (모바일 정책).
- * [시작하기] 탭이 audio unlock 트리거.
+ * [시작하기] 탭이 audio unlock + 시즌 BGM 페이드인 트리거.
  */
 
 const SESSION_KEY = 'intro_started_v1';
 
-export function IntroGate({ children }: { children: React.ReactNode }) {
+export function IntroGate({
+  children,
+  bgmUrl,
+}: {
+  children: React.ReactNode;
+  bgmUrl?: string;
+}) {
   const [introDone, setIntroDone] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -27,7 +33,10 @@ export function IntroGate({ children }: { children: React.ReactNode }) {
       // sessionStorage 차단 환경 — 인트로 안 봤다고 가정
     }
     setIntroDone(done);
-  }, []);
+    // 같은 세션이라 인트로 스킵하는 경우, BGM도 이미 재생 중일 것 (또는 정책상 unlock 필요).
+    // 안전하게 다시 시도 — 같은 URL이면 no-op.
+    if (done && bgmUrl) playBGM(bgmUrl);
+  }, [bgmUrl]);
 
   function handleStart() {
     try {
@@ -36,6 +45,7 @@ export function IntroGate({ children }: { children: React.ReactNode }) {
       // 무시 (메모리 폴백)
     }
     unlockAudio();
+    if (bgmUrl) playBGM(bgmUrl);
     setIntroDone(true);
   }
 

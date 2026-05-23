@@ -41,6 +41,90 @@ export function setMuted(muted: boolean): void {
   } catch {
     // ignore
   }
+  // BGM도 같이 토글 — mute = pause, unmute = resume (이미 재생 중이었으면)
+  if (bgmAudio) {
+    if (muted) {
+      bgmAudio.pause();
+    } else {
+      bgmAudio.play().catch(() => {
+        // 사용자 인터랙션 전이면 autoplay 거부됨 — 무시
+      });
+    }
+  }
+}
+
+// ─── BGM (시즌별 loopable instrumental) ──────────────────────────
+
+let bgmAudio: HTMLAudioElement | null = null;
+let bgmFadeTimer: number | null = null;
+
+function clearBgmFade(): void {
+  if (bgmFadeTimer !== null) {
+    window.clearInterval(bgmFadeTimer);
+    bgmFadeTimer = null;
+  }
+}
+
+/**
+ * BGM 페이드인 재생. 같은 URL이 이미 재생 중이면 no-op.
+ * 모바일 audio 정책상 첫 사용자 인터랙션 이후에만 실제 재생됨.
+ */
+export function playBGM(url: string, targetVolume = 0.3, fadeMs = 1500): void {
+  if (typeof window === 'undefined') return;
+  if (isMuted()) return;
+
+  // 같은 URL + 재생 중이면 그대로
+  if (bgmAudio && bgmAudio.src.endsWith(url) && !bgmAudio.paused) return;
+
+  // URL 바뀌면 기존 인스턴스 정리
+  if (bgmAudio && !bgmAudio.src.endsWith(url)) {
+    bgmAudio.pause();
+    bgmAudio = null;
+  }
+  if (!bgmAudio) {
+    bgmAudio = new Audio(url);
+    bgmAudio.loop = true;
+    bgmAudio.volume = 0;
+  }
+
+  const audio = bgmAudio;
+  audio.play().catch(() => {
+    // autoplay 정책 거부 — 첫 user gesture 후 다시 호출하면 됨
+  });
+
+  clearBgmFade();
+  const step = 50;
+  const increment = targetVolume / Math.max(1, fadeMs / step);
+  bgmFadeTimer = window.setInterval(() => {
+    if (!bgmAudio) {
+      clearBgmFade();
+      return;
+    }
+    const next = Math.min(targetVolume, bgmAudio.volume + increment);
+    bgmAudio.volume = next;
+    if (next >= targetVolume) clearBgmFade();
+  }, step);
+}
+
+/**
+ * BGM 페이드아웃 후 정지. 시즌 종료 또는 라우트 이탈 시 호출.
+ */
+export function stopBGM(fadeMs = 500): void {
+  if (!bgmAudio) return;
+  const audio = bgmAudio;
+  clearBgmFade();
+  const startVol = audio.volume;
+  const step = 50;
+  const decrement = startVol / Math.max(1, fadeMs / step);
+  bgmFadeTimer = window.setInterval(() => {
+    const next = Math.max(0, audio.volume - decrement);
+    audio.volume = next;
+    if (next <= 0) {
+      audio.pause();
+      audio.currentTime = 0;
+      clearBgmFade();
+    }
+  }, step);
 }
 
 // ─── 햅틱 (진행도 비례 강화) ────────────────────────────────────

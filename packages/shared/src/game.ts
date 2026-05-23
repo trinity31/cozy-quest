@@ -75,4 +75,6 @@ export interface Season {
   /** 카테고리별 슬롯 좌표. 미정의 카테고리는 dark silhouette으로 표시. */
   slots: Partial<Record<FurnitureCategory, SlotPosition>>;
   scene_ids: string[];
+  /** 시즌 BGM (Suno 등으로 생성한 loopable instrumental). 없으면 무음. */
+  bgm_url?: string;
 }
