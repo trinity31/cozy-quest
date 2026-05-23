@@ -23,6 +23,8 @@ import {
   feedbackAlreadyFound,
   feedbackDiscovery,
   isMuted,
+  playClickSFX,
+  playPlaceSFX,
   setMuted,
   unlockAudio,
 } from '@/lib/feedback';
@@ -212,7 +214,10 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
         {discovery.isComplete && !alreadyClaimed && rewardDismissed && (
           <button
             type="button"
-            onClick={() => setRewardDismissed(false)}
+            onClick={() => {
+              playClickSFX();
+              setRewardDismissed(false);
+            }}
             className="pointer-events-auto rounded-full border-[2.5px] border-ink bg-cat px-5 py-2.5 text-cap font-extrabold text-[#FFFBF0]"
           >
             🎁 선물 받기
@@ -276,6 +281,7 @@ function RewardModal({
   );
 
   function handleChoose(option: FurnitureOption) {
+    playPlaceSFX();
     const next = addHomeSlot(
       getProgress(),
       {
@@ -295,7 +301,10 @@ function RewardModal({
       <div className="relative w-full max-w-[320px] overflow-hidden rounded-modal ink-line bg-[#FFFBF0] p-5 animate-slide-up">
         <button
           type="button"
-          onClick={onDismiss}
+          onClick={() => {
+            playClickSFX();
+            onDismiss();
+          }}
           aria-label="모달 닫기"
           className="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full text-text-soft hover:bg-paper-soft"
         >
@@ -341,7 +350,10 @@ function RevealCard({ scene, onAdvance }: { scene: Scene; onAdvance: () => void 
 
       <button
         type="button"
-        onClick={onAdvance}
+        onClick={() => {
+          playClickSFX();
+          onAdvance();
+        }}
         className="mt-4 h-14 w-full rounded-full border-[2.5px] border-ink bg-cat font-sans text-xl font-extrabold text-[#FFFBF0] transition-colors active:bg-cat-deep"
       >
         선물 받기

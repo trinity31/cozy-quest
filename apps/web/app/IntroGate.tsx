@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { IntroView } from './IntroView';
-import { playBGM, unlockAudio } from '@/lib/feedback';
+import { playBGM, playClickSFX, unlockAudio } from '@/lib/feedback';
 
 /**
  * 인트로 게이트 — sessionStorage 기반 분기.
@@ -45,6 +45,7 @@ export function IntroGate({
       // 무시 (메모리 폴백)
     }
     unlockAudio();
+    playClickSFX();
     if (bgmUrl) playBGM(bgmUrl);
     setIntroDone(true);
   }

@@ -127,6 +127,38 @@ export function stopBGM(fadeMs = 500): void {
   }, step);
 }
 
+// ─── SFX 파일 재생 (가구 배치·UI 클릭) ──────────────────────────
+
+const SFX_VOLUME = 0.5;
+const sfxCache = new Map<string, HTMLAudioElement>();
+
+function playSFXFile(url: string): void {
+  if (typeof window === 'undefined') return;
+  if (isMuted()) return;
+  let audio = sfxCache.get(url);
+  if (!audio) {
+    audio = new Audio(url);
+    audio.preload = 'auto';
+    audio.volume = SFX_VOLUME;
+    sfxCache.set(url, audio);
+  }
+  // 연타 시 처음부터 다시
+  audio.currentTime = 0;
+  audio.play().catch(() => {
+    // 첫 user gesture 전 autoplay 거부 — 무시
+  });
+}
+
+/** 가구 배치 SFX — 빈 방 슬롯에 가구 박힐 때 */
+export function playPlaceSFX(): void {
+  playSFXFile('/audio/sfx_place.mp3');
+}
+
+/** UI 클릭 SFX — 버튼·카드 선택 */
+export function playClickSFX(): void {
+  playSFXFile('/audio/sfx_click.mp3');
+}
+
 // ─── 햅틱 (진행도 비례 강화) ────────────────────────────────────
 
 const VIBRATE_PATTERNS: ReadonlyArray<number | number[]> = [
