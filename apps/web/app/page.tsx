@@ -4,6 +4,7 @@ import seasonsData from '@/public/data/seasons.json';
 import { IntroGate } from './IntroGate';
 import { PickerView } from './PickerView';
 import { SceneRouter } from './SceneRouter';
+import { SplashGate } from './SplashGate';
 
 interface HomePageProps {
   searchParams: { picker?: string };
@@ -30,10 +31,15 @@ export default function HomePage({ searchParams }: HomePageProps) {
   const seasonId = candidates[0]!.season_id;
   const season = (seasonsData.seasons as Season[]).find((s) => s.season_id === seasonId);
 
+  // Splash 단계에서 미리 받아둘 자산 — 인트로 일러스트(최우선)
+  const splashPreload = ['/intro/season_001_title.png'];
+
   return (
-    <IntroGate bgmUrl={season?.bgm_url}>
-      <SceneRouter candidates={candidates} />
-    </IntroGate>
+    <SplashGate preloadImages={splashPreload}>
+      <IntroGate bgmUrl={season?.bgm_url}>
+        <SceneRouter candidates={candidates} />
+      </IntroGate>
+    </SplashGate>
   );
 }
 

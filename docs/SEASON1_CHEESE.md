@@ -624,7 +624,7 @@ z-order 기본: bed(1) → rug(2) → chair(3) → plant(4) → cushion(5) → s
 - [ ] 타이틀 일러스트 (미드저니 1장)
 - [ ] 인트로 화면 코드
 - [ ] BGM 1곡 (Suno) + SFX 5종 (가구 배치·치즈 발견·완성·클릭·인트로)
-- [ ] 로딩 화면
+- [x] 로딩 화면 (SplashGate + SplashView, 인트로 일러스트 preload + 최소 900ms)
 - [ ] 모바일 프레임 고정
 - [ ] **🏆 기획서 5/25 제출**
 
