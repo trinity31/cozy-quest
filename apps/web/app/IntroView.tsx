@@ -45,7 +45,7 @@ export function IntroView({ onStart }: { onStart: () => void }) {
           onClick={onStart}
           className="h-14 w-full max-w-[260px] rounded-full ink-line bg-cat font-sans text-2xl font-extrabold text-[#FFFBF0] transition-colors active:bg-cat-deep"
         >
-          시작하기
+          여행 시작하기
         </button>
       </div>
     </main>

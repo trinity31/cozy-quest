@@ -107,37 +107,37 @@
           {
             "part_id": "p002_fullbody",
             "type": "fullbody",
-            "x": 0.93,
-            "y": 0.966,
-            "radius": 0.07
+            "x": 0.104,
+            "y": 0.193,
+            "radius": 0.06
           },
           {
             "part_id": "p002_face",
             "type": "face",
-            "x": 0.136,
-            "y": 0.581,
-            "radius": 0.05
+            "x": 0.661,
+            "y": 0.35,
+            "radius": 0.06
           },
           {
             "part_id": "p002_tail",
             "type": "tail",
-            "x": 0.976,
-            "y": 0.546,
-            "radius": 0.05
+            "x": 0.359,
+            "y": 0.517,
+            "radius": 0.06
           },
           {
             "part_id": "p002_paw",
             "type": "paw",
-            "x": 0.343,
-            "y": 0.506,
-            "radius": 0.05
+            "x": 0.303,
+            "y": 0.891,
+            "radius": 0.06
           },
           {
             "part_id": "p002_ears",
             "type": "ears",
-            "x": 0.32,
-            "y": 0.916,
-            "radius": 0.05
+            "x": 0.968,
+            "y": 0.549,
+            "radius": 0.06
           }
         ]
       }
@@ -211,6 +211,82 @@
             "radius": 0.05
           }
         ]
+      }
+    },
+    {
+      "scene_id": "teahouse_afternoon_004",
+      "title": "찻집 오후",
+      "motif": "teahouse",
+      "difficulty": 2,
+      "image_url": "/scenes/_locked_placeholder.png",
+      "release_date": "2099-01-01",
+      "season_id": "season_001_cheese",
+      "day_in_season": 4,
+      "furniture_category": "chair",
+      "cat": {
+        "cat_id": "cat_001",
+        "name": "치즈",
+        "personality": "낮잠을 좋아하는",
+        "fullbody_image_url": "/cats/cat_001_fullbody.png",
+        "furniture_options": [],
+        "parts": []
+      }
+    },
+    {
+      "scene_id": "fishmonger_dusk_005",
+      "title": "어물전 해질녘",
+      "motif": "fishmonger",
+      "difficulty": 2,
+      "image_url": "/scenes/_locked_placeholder.png",
+      "release_date": "2099-01-01",
+      "season_id": "season_001_cheese",
+      "day_in_season": 5,
+      "furniture_category": "shelf",
+      "cat": {
+        "cat_id": "cat_001",
+        "name": "치즈",
+        "personality": "낮잠을 좋아하는",
+        "fullbody_image_url": "/cats/cat_001_fullbody.png",
+        "furniture_options": [],
+        "parts": []
+      }
+    },
+    {
+      "scene_id": "nightmarket_006",
+      "title": "야시장 등불",
+      "motif": "nightmarket",
+      "difficulty": 3,
+      "image_url": "/scenes/_locked_placeholder.png",
+      "release_date": "2099-01-01",
+      "season_id": "season_001_cheese",
+      "day_in_season": 6,
+      "furniture_category": "lamp",
+      "cat": {
+        "cat_id": "cat_001",
+        "name": "치즈",
+        "personality": "낮잠을 좋아하는",
+        "fullbody_image_url": "/cats/cat_001_fullbody.png",
+        "furniture_options": [],
+        "parts": []
+      }
+    },
+    {
+      "scene_id": "rainyalley_007",
+      "title": "비 오는 골목",
+      "motif": "rainyalley",
+      "difficulty": 3,
+      "image_url": "/scenes/_locked_placeholder.png",
+      "release_date": "2099-01-01",
+      "season_id": "season_001_cheese",
+      "day_in_season": 7,
+      "furniture_category": "bed",
+      "cat": {
+        "cat_id": "cat_001",
+        "name": "치즈",
+        "personality": "낮잠을 좋아하는",
+        "fullbody_image_url": "/cats/cat_001_fullbody.png",
+        "furniture_options": [],
+        "parts": []
       }
     }
   ]

@@ -31,6 +31,19 @@ import {
 
 const isDev = process.env.NODE_ENV === 'development';
 
+// 기획서 §2.1 / §5 [5]: 씬당 60초 빡세게 (시즌1 CHEESE 메커닉 2026-05-22).
+const SCENE_DURATION_SECONDS = 60;
+// 기획서 §2.3: 힌트 씬당 2회 고정.
+const HINTS_PER_SCENE = 2;
+// 힌트 펄스 지속 시간 (ms)
+const HINT_PULSE_MS = 1400;
+
+function formatTime(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
 const PART_LABEL: Record<PartType, string> = {
   fullbody: '풀바디',
   tail: '꼬리',
@@ -54,6 +67,11 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
   // 5/5 영속 + 선물 미수령 상태에서 사용자가 모달 닫고 풍경 회상할 수 있게.
   // 세션 단위 (새로고침 시 초기화 = 자동 재등장).
   const [rewardDismissed, setRewardDismissed] = useState(false);
+  // 기획서 §2.1 / §2.3 / §5 [5] — 타이머 + 힌트.
+  const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
+  const [hintsLeft, setHintsLeft] = useState(HINTS_PER_SCENE);
+  const [hintedPartId, setHintedPartId] = useState<string | null>(null);
+  const [timeUp, setTimeUp] = useState(false);
   const startedAtRef = useRef<string | null>(null);
 
   // Mount: localStorage 복원 + sceneStart 보장
@@ -81,10 +99,85 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
     return () => window.clearTimeout(t);
   }, [recentHit]);
 
+  // 힌트 펄스 자동 클리어
+  useEffect(() => {
+    if (!hintedPartId) return;
+    const t = window.setTimeout(() => setHintedPartId(null), HINT_PULSE_MS);
+    return () => window.clearTimeout(t);
+  }, [hintedPartId]);
+
   const discovery = useMemo(
     () => getDiscoveryState(scene.cat.parts, foundIds),
     [scene.cat.parts, foundIds],
   );
+
+  const hasParts = scene.cat.parts.length > 0;
+  const timerActive =
+    hydrated && hasParts && !discovery.isComplete && secondsLeft !== null;
+
+  // 타이머 시작 — 5/5 미발견 + 부위 있음 + 하이드레이션 완료 시.
+  useEffect(() => {
+    if (!hydrated) return;
+    if (!hasParts) return;
+    if (discovery.isComplete) return;
+    if (secondsLeft !== null) return;
+    setSecondsLeft(SCENE_DURATION_SECONDS);
+  }, [hydrated, hasParts, discovery.isComplete, secondsLeft]);
+
+  // 1초 tick
+  useEffect(() => {
+    if (!timerActive) return;
+    if (secondsLeft === null || secondsLeft <= 0) return;
+    const t = window.setTimeout(() => setSecondsLeft((s) => (s === null ? null : s - 1)), 1000);
+    return () => window.clearTimeout(t);
+  }, [timerActive, secondsLeft]);
+
+  // 시간 초과 → 씬 재시작 트리거 (CHEESE 메커닉 2026-05-22: 시간초과=씬 재시작).
+  useEffect(() => {
+    if (!hydrated) return;
+    if (!hasParts) return;
+    if (discovery.isComplete) return;
+    if (secondsLeft !== 0) return;
+    if (timeUp) return;
+    setTimeUp(true);
+  }, [hydrated, hasParts, discovery.isComplete, secondsLeft, timeUp]);
+
+  // 씬 재시도 — 이 씬의 hits + scene_started_at 만 제거, 그 외 진척은 유지.
+  function handleRetry() {
+    playClickSFX();
+    const scenePartIds = new Set(scene.cat.parts.map((p) => p.part_id));
+    const current = getProgress();
+    const cleanedHits = current.hits.filter((h) => !scenePartIds.has(h.part_id));
+    const cleanedStarted = { ...current.scene_started_at };
+    delete cleanedStarted[scene.scene_id];
+    const now = new Date();
+    const nextProgress = {
+      ...current,
+      hits: cleanedHits,
+      scene_started_at: { ...cleanedStarted, [scene.scene_id]: now.toISOString() },
+    };
+    setProgress(nextProgress);
+    startedAtRef.current = nextProgress.scene_started_at[scene.scene_id]!;
+    setFoundIds([]);
+    setRecentHit(null);
+    setHintedPartId(null);
+    setHintsLeft(HINTS_PER_SCENE);
+    setSecondsLeft(SCENE_DURATION_SECONDS);
+    setTimeUp(false);
+  }
+
+  function handleHint() {
+    if (hintsLeft <= 0) return;
+    if (discovery.isComplete) return;
+    if (!hasParts) return;
+    const missing = scene.cat.parts.filter((p) => !foundIds.includes(p.part_id));
+    if (missing.length === 0) return;
+    const pick = missing[Math.floor(Math.random() * missing.length)];
+    if (!pick) return;
+    playClickSFX();
+    setHintedPartId(pick.part_id);
+    setHintsLeft(hintsLeft - 1);
+  }
 
   function handlePartTap(partId: string, type: PartType) {
     unlockAudio();
@@ -140,7 +233,9 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
 
             {scene.cat.parts.map((part) => {
               const found = foundIds.includes(part.part_id);
-              const pulse = recentHit?.id === part.part_id && recentHit.isNew;
+              const pulse =
+                (recentHit?.id === part.part_id && recentHit.isNew) ||
+                hintedPartId === part.part_id;
               return (
                 <button
                   key={part.part_id}
@@ -172,10 +267,13 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
         </TransformComponent>
       </TransformWrapper>
 
-      {/* 상단 헤더 — 5-slot 발견 카운트 + 음소거 */}
+      {/* 상단 헤더 — 5-slot 발견 카운트 + 타이머 + 음소거 */}
       <header className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between px-3 pt-3">
-        <div className="pointer-events-auto">
+        <div className="pointer-events-auto flex flex-col items-start gap-1.5">
           <DiscoveryHeader found={hydrated ? discovery.found : 0} total={scene.cat.parts.length} />
+          {timerActive && secondsLeft !== null && (
+            <TimerPill seconds={secondsLeft} />
+          )}
         </div>
         <div className="pointer-events-auto flex items-center gap-2">
           {isDev && (
@@ -209,28 +307,96 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
         />
       )}
 
-      {/* 하단 푸터 — 보금자리 + (선물 미수령 시) 선물 받기 CTA */}
-      <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-center gap-2 px-4 pb-5">
-        {discovery.isComplete && !alreadyClaimed && rewardDismissed && (
-          <button
-            type="button"
-            onClick={() => {
-              playClickSFX();
-              setRewardDismissed(false);
-            }}
-            className="pointer-events-auto rounded-full border-[2.5px] border-ink bg-cat px-5 py-2.5 text-cap font-extrabold text-[#FFFBF0]"
-          >
-            🎁 선물 받기
-          </button>
-        )}
+      {/* 시간 초과 오버레이 — 자동 노출 X, 재시도만 (CHEESE 2026-05-22 빡세게) */}
+      {timeUp && !discovery.isComplete && (
+        <TimeUpOverlay found={discovery.found} total={scene.cat.parts.length} onRetry={handleRetry} />
+      )}
+
+      {/* 하단 푸터 — 보금자리 + 힌트 + (선물 미수령 시) 선물 받기 CTA */}
+      <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-2 px-4 pb-5">
         <Link
           href="/home"
           className="pointer-events-auto rounded-full ink-line bg-[#FFFBF0] px-5 py-2.5 text-cap font-semibold text-text backdrop-blur-sm"
         >
           🏠 보금자리
         </Link>
+
+        <div className="pointer-events-auto flex items-center gap-2">
+          {discovery.isComplete && !alreadyClaimed && rewardDismissed && (
+            <button
+              type="button"
+              onClick={() => {
+                playClickSFX();
+                setRewardDismissed(false);
+              }}
+              className="rounded-full border-[2.5px] border-ink bg-cat px-5 py-2.5 text-cap font-extrabold text-[#FFFBF0]"
+            >
+              🎁 선물 받기
+            </button>
+          )}
+          {hasParts && !discovery.isComplete && (
+            <button
+              type="button"
+              onClick={handleHint}
+              disabled={hintsLeft <= 0}
+              aria-label={`힌트 (${hintsLeft}회 남음)`}
+              className="flex h-12 items-center gap-1.5 rounded-full ink-line bg-honey px-4 text-cap font-bold text-text disabled:opacity-50"
+            >
+              <span aria-hidden>💡</span>
+              <span className="tabular-nums">힌트 {hintsLeft}/{HINTS_PER_SCENE}</span>
+            </button>
+          )}
+        </div>
       </footer>
     </main>
+  );
+}
+
+// ─── TimeUpOverlay — 시간 초과 시 재시도 모달 ───────────────────────
+
+function TimeUpOverlay({
+  found,
+  total,
+  onRetry,
+}: {
+  found: number;
+  total: number;
+  onRetry: () => void;
+}) {
+  return (
+    <div className="absolute inset-0 z-30 flex items-center justify-center bg-ink/40 px-4 backdrop-blur-sm">
+      <div className="ink-line w-full max-w-[300px] rounded-modal bg-[#FFFBF0] p-5 text-center animate-slide-up">
+        <p className="font-sans text-3xl">⏱</p>
+        <h2 className="mt-2 font-book text-h2 font-bold text-cat-deep">시간 초과</h2>
+        <p className="mt-1 font-sans text-cap text-text-soft">
+          치즈를 <span className="font-bold text-cat-deep">{found}/{total}</span> 찾았어요
+        </p>
+        <button
+          type="button"
+          onClick={onRetry}
+          className="mt-4 h-12 w-full rounded-full border-[2.5px] border-ink bg-cat font-sans text-lg font-extrabold text-[#FFFBF0] active:bg-cat-deep"
+        >
+          🔄 재시도
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── TimerPill — 상단 타이머 ────────────────────────────────────────
+
+function TimerPill({ seconds }: { seconds: number }) {
+  const danger = seconds <= 10;
+  return (
+    <div
+      className={`rounded-full ink-line px-3 py-1 font-sans text-cap font-bold tabular-nums ${
+        danger ? 'bg-terra text-[#FFFBF0]' : 'bg-[#FFFBF0]/90 text-text'
+      }`}
+      role="timer"
+      aria-live={danger ? 'assertive' : 'off'}
+    >
+      ⏱ {formatTime(seconds)}
+    </div>
   );
 }
 

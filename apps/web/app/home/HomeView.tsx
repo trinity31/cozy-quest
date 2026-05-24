@@ -17,6 +17,7 @@ import {
 } from '@cozy-quest/shared';
 import scenesData from '@/public/data/scenes.json';
 import type { Scene } from '@cozy-quest/shared';
+import { EndingOverlay } from './EndingOverlay';
 
 interface ChosenItem {
   category: FurnitureCategory;
@@ -84,6 +85,15 @@ export function HomeView({ season }: { season: Season }) {
   const [allCleared, setAllCleared] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [latestCat, setLatestCat] = useState<FurnitureCategory | null>(null);
+  // 기획서 §5 [8] Ending — 현재 playable 씬을 모두 완료했을 때 표시.
+  // 한 세션 내에서 닫고 다시 보기 가능; 새로고침/재방문 시 다시 등장.
+  const [endingDismissed, setEndingDismissed] = useState(false);
+  const [endingState, setEndingState] = useState<{
+    catImage: string;
+    catName: string;
+    seasonTotal: number;
+    playableCount: number;
+  } | null>(null);
 
   useEffect(() => {
     const progress = getProgress();
@@ -105,6 +115,29 @@ export function HomeView({ season }: { season: Season }) {
       setNextScene(slotted ? null : active);
       setAllCleared(slotted);
     }
+
+    // Ending 트리거 — 현재 release 도래한 씬(playable)을 모두 완성했는지
+    const playableScenes = seasonScenes.filter((s) => s.release_date <= today);
+    const completedPlayable = playableScenes.filter((s) =>
+      progress.home_slots.some(
+        (h) => h.season_id === s.season_id && h.category === s.furniture_category,
+      ),
+    );
+    if (playableScenes.length > 0 && completedPlayable.length === playableScenes.length) {
+      // 시즌 전체 sceneCount 추정 — scenes.json에서 같은 season_id 전체 (locked 포함)
+      const seasonTotal = seasonScenes.length;
+      // 치즈 이름·이미지는 첫 씬에서 가져옴 (시즌 1마리 = 같은 cat)
+      const cat = playableScenes[0]!.cat;
+      setEndingState({
+        catImage: cat.fullbody_image_url,
+        catName: cat.name,
+        seasonTotal,
+        playableCount: completedPlayable.length,
+      });
+    } else {
+      setEndingState(null);
+    }
+
     setHydrated(true);
   }, [season]);
 
@@ -194,20 +227,41 @@ export function HomeView({ season }: { season: Season }) {
 
       {/* 하단 CTA — 다음 풍경 진척 또는 시즌 완료 표시 */}
       {hydrated && (nextScene || allCleared) && (
-        <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-center px-4 pb-5">
+        <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-center justify-between gap-2 px-4 pb-5">
           {nextScene ? (
             <Link
-              href="/"
+              href={`/?play=${nextScene.scene_id}`}
               className="pointer-events-auto rounded-full border-[2.5px] border-ink bg-cat px-6 py-3 font-sans text-lg font-extrabold text-[#FFFBF0]"
             >
-              다음: {nextScene.title}
+              다음 풍경
             </Link>
           ) : (
             <span className="pointer-events-auto rounded-full ink-line bg-[#FFFBF0] px-5 py-2.5 text-cap font-semibold text-text-soft">
               오늘의 진척 완료 ✓
             </span>
           )}
+          {endingState && endingDismissed && (
+            <button
+              type="button"
+              onClick={() => setEndingDismissed(false)}
+              className="pointer-events-auto rounded-full ink-line bg-honey px-4 py-2.5 font-sans text-cap font-bold text-text"
+            >
+              🌟 엔딩 다시 보기
+            </button>
+          )}
         </footer>
+      )}
+
+      {/* Ending 오버레이 — 시즌(playable) 완성 + 사용자가 닫지 않은 상태 */}
+      {hydrated && endingState && !endingDismissed && (
+        <EndingOverlay
+          catImage={endingState.catImage}
+          catName={endingState.catName}
+          seasonTitle={season.title}
+          completedCount={endingState.playableCount}
+          totalScenes={endingState.seasonTotal}
+          onClose={() => setEndingDismissed(true)}
+        />
       )}
     </main>
   );

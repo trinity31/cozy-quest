@@ -116,6 +116,16 @@ const config: Config = {
           '60%':  { transform: 'rotate(var(--slot-rot,0deg)) scale(1.08)', opacity: '1' },
           '100%': { transform: 'rotate(var(--slot-rot,0deg)) scale(1)', opacity: '1' },
         },
+        // 치즈 breathing — Ending 화면, 살아있는 듯 부드럽게 (CHEESE §9 [9])
+        breathing: {
+          '0%, 100%': { transform: 'scale(1) translateY(0)' },
+          '50%':      { transform: 'scale(1.035) translateY(-1.5px)' },
+        },
+        // Ending overlay fade-in
+        'fade-in': {
+          '0%':   { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
       animation: {
         sparkle: 'sparkle 1.6s ease-in-out infinite',
@@ -123,6 +133,8 @@ const config: Config = {
         'toast-pop': 'toast-pop 1400ms ease-out forwards',
         // cubic-bezier(0.34, 1.56, 0.64, 1) = spring overshoot (SEASON1 §11.2)
         'furniture-pop': 'furniture-pop 500ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+        breathing: 'breathing 3.2s ease-in-out infinite',
+        'fade-in': 'fade-in 800ms ease-out forwards',
       },
     },
   },
