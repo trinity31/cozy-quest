@@ -268,13 +268,10 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
         </TransformComponent>
       </TransformWrapper>
 
-      {/* 상단 헤더 — 5-slot 발견 카운트 + 타이머 + 음소거 */}
+      {/* 상단 헤더 — 5-slot 발견 카운트 + 음소거 (타이머는 하단 가운데) */}
       <header className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between px-3 pt-3">
-        <div className="pointer-events-auto flex flex-col items-start gap-1.5">
+        <div className="pointer-events-auto">
           <DiscoveryHeader found={hydrated ? discovery.found : 0} total={scene.cat.parts.length} />
-          {timerActive && secondsLeft !== null && (
-            <TimerPill seconds={secondsLeft} />
-          )}
         </div>
         <div className="pointer-events-auto flex items-center gap-2">
           {isDev && (
@@ -313,9 +310,9 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
         <TimeUpOverlay found={discovery.found} total={scene.cat.parts.length} onRetry={handleRetry} />
       )}
 
-      {/* 하단 푸터 — 보금자리(집 아이콘) + 힌트(돋보기) + 선물 받기 CTA.
+      {/* 하단 푸터 — 보금자리(좌) | 타이머(중앙) | 힌트·선물(우).
           가장자리 부위 가림 최소화하려 아이콘-only 44px 원형. */}
-      <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-2 px-3 pb-4">
+      <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-center justify-between gap-2 px-3 pb-4">
         <Link
           href="/home"
           aria-label="보금자리로 가기"
@@ -324,6 +321,13 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
         >
           <HomeIcon size={22} />
         </Link>
+
+        {/* 중앙 타이머 */}
+        <div className="pointer-events-auto">
+          {timerActive && secondsLeft !== null && (
+            <TimerPill seconds={secondsLeft} />
+          )}
+        </div>
 
         <div className="pointer-events-auto flex items-center gap-2">
           {discovery.isComplete && !alreadyClaimed && rewardDismissed && (

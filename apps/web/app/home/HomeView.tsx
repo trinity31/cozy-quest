@@ -203,7 +203,7 @@ export function HomeView({ season }: { season: Season }) {
       {/* 상단 헤더 — 진척 게이지 + 보조 풍경 링크 + dev 리셋 */}
       <header className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between px-3 pt-3">
         <div className="pointer-events-auto rounded-card ink-line bg-[#FFFBF0]/95 px-3 py-2 backdrop-blur-md">
-          <p className="font-mark text-base text-cat-deep" style={{ transform: 'rotate(-1.5deg)' }}>
+          <p className="font-book text-base font-bold text-cat-deep">
             {season.title}
           </p>
           <p className="mt-0.5 text-cap text-text-soft tabular-nums">

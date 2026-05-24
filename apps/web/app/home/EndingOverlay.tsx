@@ -77,10 +77,7 @@ export function EndingOverlay({
 
       {/* 하단 카드 — 메시지 + 시즌 맵 + Coming Soon + CTA */}
       <div className="ink-line w-full max-w-[360px] rounded-modal bg-paper-soft p-5 text-center shadow-paper-3">
-        <h2
-          className="font-mark text-3xl text-cat-deep"
-          style={{ transform: 'rotate(-1.5deg)' }}
-        >
+        <h2 className="font-book text-3xl font-bold text-cat-deep">
           {headline}
         </h2>
         <p className="mt-1 font-sans text-cap text-text-soft">
@@ -107,10 +104,7 @@ export function EndingOverlay({
 
         {/* Coming Soon */}
         <div className="ink-line-dashed mt-4 rounded-card bg-[#FFFBF0] p-3">
-          <p
-            className="font-mark text-base text-cat-deep"
-            style={{ transform: 'rotate(-1deg)' }}
-          >
+          <p className="font-book text-base font-bold text-cat-deep">
             다음 시즌 Coming Soon
           </p>
           <p className="mt-0.5 font-sans text-cap text-text-soft">

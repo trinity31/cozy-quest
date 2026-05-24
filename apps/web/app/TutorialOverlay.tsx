@@ -68,7 +68,7 @@ export function TutorialOverlay({ onFinish }: { onFinish: () => void }) {
         </div>
 
         <div className="ink-line w-full rounded-modal bg-[#FFFBF0] p-5 text-center">
-          <h2 className="font-mark text-2xl text-cat-deep" style={{ transform: 'rotate(-1deg)' }}>
+          <h2 className="font-book text-2xl font-bold text-cat-deep">
             {current.title}
           </h2>
           <p className="mt-2 font-sans text-body leading-relaxed text-text">{current.body}</p>

@@ -12,10 +12,7 @@ export function SplashView() {
         <h1 className="font-sans text-5xl font-extrabold leading-none text-cat-deep">
           Cozy Quest
         </h1>
-        <p
-          className="mt-3 font-sans text-lg font-semibold text-text"
-          style={{ transform: 'rotate(-1.5deg)' }}
-        >
+        <p className="mt-3 font-sans text-lg font-semibold text-text">
           숨은 고양이 찾기
         </p>
       </div>

@@ -113,7 +113,7 @@ export function PickerView({ scene }: { scene: Scene }) {
             <h1 className="font-book text-sm text-text">
               좌표 picker — {scene.title}
             </h1>
-            <span className="wobble2 ink-line rounded-full bg-honey px-2 py-0.5 font-mark text-xs font-bold text-text">
+            <span className="ink-line rounded-full bg-honey px-2 py-0.5 font-sans text-xs font-bold text-text">
               PICKER
             </span>
           </div>
@@ -121,7 +121,7 @@ export function PickerView({ scene }: { scene: Scene }) {
             <p className="mt-1.5 text-cap text-text-soft tabular-nums">
               마지막:{' '}
               <code className="rounded bg-paper px-1.5 py-0.5 font-mono text-[11px]">{`{ x: ${lastPick.x}, y: ${lastPick.y} }`}</code>
-              {copyMsg && <span className="ml-2 font-mark text-base text-cat-deep">{copyMsg}</span>}
+              {copyMsg && <span className="ml-2 font-sans text-cap font-bold text-cat-deep">{copyMsg}</span>}
             </p>
           ) : (
             <p className="mt-1.5 text-cap text-text-faint">

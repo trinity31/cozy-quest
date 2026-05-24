@@ -26,10 +26,7 @@ export function IntroView({ onStart }: { onStart: () => void }) {
           <h1 className="text-center font-sans text-4xl font-extrabold leading-none text-cat-deep">
             Cozy Quest
           </h1>
-          <p
-            className="mt-2 text-center font-sans text-lg font-semibold text-text"
-            style={{ transform: 'rotate(-1.5deg)' }}
-          >
+          <p className="mt-2 text-center font-sans text-lg font-semibold text-text">
             숨은 고양이 찾기
           </p>
         </div>
