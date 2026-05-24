@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import {
   getProgress,
@@ -9,6 +8,7 @@ import {
   type Scene,
 } from '@cozy-quest/shared';
 import { playClickSFX } from '@/lib/feedback';
+import { ImageWithSpinner } from './ImageWithSpinner';
 
 /**
  * Day Selection — 기획서 §5 [4].
@@ -163,7 +163,7 @@ function DayCardItem({
     >
       <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md ink-line-faint bg-paper-soft">
         {hasArt ? (
-          <Image
+          <ImageWithSpinner
             src={scene.image_url}
             alt={scene.title}
             fill

@@ -1,7 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
+import { ImageWithSpinner } from './ImageWithSpinner';
+import { HomeIcon, SearchIcon } from './icons';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
@@ -221,7 +222,7 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
       >
         <TransformComponent wrapperClass="!h-full !w-full" contentClass="!h-full !w-full">
           <div className="relative aspect-[9/16] w-full select-none">
-            <Image
+            <ImageWithSpinner
               src={scene.image_url}
               alt={scene.title}
               fill
@@ -312,13 +313,16 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
         <TimeUpOverlay found={discovery.found} total={scene.cat.parts.length} onRetry={handleRetry} />
       )}
 
-      {/* 하단 푸터 — 보금자리 + 힌트 + (선물 미수령 시) 선물 받기 CTA */}
-      <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-2 px-4 pb-5">
+      {/* 하단 푸터 — 보금자리(집 아이콘) + 힌트(돋보기) + 선물 받기 CTA.
+          가장자리 부위 가림 최소화하려 아이콘-only 44px 원형. */}
+      <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-2 px-3 pb-4">
         <Link
           href="/home"
-          className="pointer-events-auto rounded-full ink-line bg-[#FFFBF0] px-5 py-2.5 text-cap font-semibold text-text backdrop-blur-sm"
+          aria-label="보금자리로 가기"
+          title="보금자리"
+          className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full ink-line bg-[#FFFBF0]/90 text-text backdrop-blur-md"
         >
-          🏠 보금자리
+          <HomeIcon size={22} />
         </Link>
 
         <div className="pointer-events-auto flex items-center gap-2">
@@ -340,10 +344,16 @@ export function DiscoveryView({ scene }: { scene: Scene }) {
               onClick={handleHint}
               disabled={hintsLeft <= 0}
               aria-label={`힌트 (${hintsLeft}회 남음)`}
-              className="flex h-12 items-center gap-1.5 rounded-full ink-line bg-honey px-4 text-cap font-bold text-text disabled:opacity-50"
+              title={`힌트 ${hintsLeft}/${HINTS_PER_SCENE}`}
+              className="relative flex h-11 w-11 items-center justify-center rounded-full ink-line bg-honey text-text backdrop-blur-md disabled:opacity-50"
             >
-              <span aria-hidden>💡</span>
-              <span className="tabular-nums">힌트 {hintsLeft}/{HINTS_PER_SCENE}</span>
+              <SearchIcon size={22} />
+              <span
+                aria-hidden
+                className="absolute -bottom-1 -right-1 flex h-5 min-w-[20px] items-center justify-center rounded-full ink-line bg-cat-deep px-1 text-[10px] font-bold leading-none text-[#FFFBF0] tabular-nums"
+              >
+                {hintsLeft}
+              </span>
             </button>
           )}
         </div>
@@ -499,7 +509,7 @@ function RevealCard({ scene, onAdvance }: { scene: Scene; onAdvance: () => void 
 
       <div className="mx-auto mt-3 aspect-square w-40">
         <div className="relative h-full w-full overflow-hidden rounded-card ink-line bg-paper-soft">
-          <Image
+          <ImageWithSpinner
             src={scene.cat.fullbody_image_url}
             alt={scene.cat.name}
             fill
@@ -552,7 +562,7 @@ function PickCard({
             className="group flex flex-col items-center gap-1 rounded-card ink-line bg-paper-soft p-2 transition-colors active:bg-paper-deep"
           >
             <div className="relative aspect-square w-full overflow-hidden rounded-md">
-              <Image
+              <ImageWithSpinner
                 src={opt.image_url}
                 alt={opt.name}
                 fill

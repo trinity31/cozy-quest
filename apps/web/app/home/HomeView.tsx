@@ -18,6 +18,7 @@ import {
 import scenesData from '@/public/data/scenes.json';
 import type { Scene } from '@cozy-quest/shared';
 import { EndingOverlay } from './EndingOverlay';
+import { ImageWithSpinner } from '../ImageWithSpinner';
 
 interface ChosenItem {
   category: FurnitureCategory;
@@ -154,7 +155,7 @@ export function HomeView({ season }: { season: Season }) {
   return (
     <main className="relative flex-1 overflow-hidden bg-paper">
       <div className="relative mx-auto aspect-[9/16] w-full max-w-[480px]">
-        <Image
+        <ImageWithSpinner
           src={season.room_image_url}
           alt={`${season.title} 보금자리`}
           fill
