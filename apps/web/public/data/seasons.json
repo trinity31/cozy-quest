@@ -8,9 +8,21 @@
       "slots": {
         "plant":   { "x": 0.62, "y": 0.62, "w": 0.26, "h": 0.18 },
         "cushion": { "x": 0.42, "y": 0.76, "w": 0.20, "h": 0.14 },
-        "rug":     { "x": 0.50, "y": 0.80, "w": 0.42, "h": 0.15 }
+        "rug":     { "x": 0.50, "y": 0.80, "w": 0.42, "h": 0.15 },
+        "chair":   { "x": 0.30, "y": 0.55, "w": 0.22, "h": 0.28 },
+        "shelf":   { "x": 0.85, "y": 0.55, "w": 0.22, "h": 0.30 },
+        "lamp":    { "x": 0.15, "y": 0.40, "w": 0.14, "h": 0.22 },
+        "bed":     { "x": 0.25, "y": 0.82, "w": 0.30, "h": 0.18 }
       },
-      "scene_ids": ["market_dawn_001", "bakery_morning_002", "florist_noon_003"],
+      "scene_ids": [
+        "market_dawn_001",
+        "bakery_morning_002",
+        "florist_noon_003",
+        "teahouse_afternoon_004",
+        "fishmarket_evening_005",
+        "nightmarket_moonlit_006",
+        "rainyalley_007"
+      ],
       "bgm_url": "/audio/season_001_bgm.mp3"
     }
   ]
