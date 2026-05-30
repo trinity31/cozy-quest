@@ -290,7 +290,7 @@
       "motif": "fishmarket",
       "difficulty": 2,
       "image_url": "/scenes/fishmarket_evening_005.png",
-      "release_date": "2099-01-01",
+      "release_date": "2026-05-30",
       "season_id": "season_001_cheese",
       "day_in_season": 5,
       "furniture_category": "shelf",
@@ -299,8 +299,63 @@
         "name": "치즈",
         "personality": "낮잠을 좋아하는",
         "fullbody_image_url": "/cats/cat_001_fullbody.png",
-        "furniture_options": [],
-        "parts": []
+        "furniture_options": [
+          {
+            "id": "shelf_books_warm",
+            "name": "책장 (따뜻한 책들)",
+            "image_url": "/furniture/season_001/shelf_01_books_warm.png",
+            "slot_override": { "x": 0.45, "y": 0.56, "w": 0.23, "h": 0.6 }
+          },
+          {
+            "id": "shelf_dishes_ceramic",
+            "name": "그릇장 (도자기)",
+            "image_url": "/furniture/season_001/shelf_02_dishes_ceramic.png",
+            "slot_override": { "x": 0.44, "y": 0.6, "w": 0.35, "h": 0.6 }
+          },
+          {
+            "id": "shelf_wallhung_simple",
+            "name": "벽선반 (심플)",
+            "image_url": "/furniture/season_001/shelf_03_wallhung_simple.png",
+            "slot_override": { "x": 0.4, "y": 0.55, "w": 0.22, "h": 0.22 }
+          }
+        ],
+        "parts": [
+          {
+            "part_id": "p005_fullbody",
+            "type": "fullbody",
+            "x": 0.468,
+            "y": 0.502,
+            "radius": 0.06
+          },
+          {
+            "part_id": "p005_face",
+            "type": "face",
+            "x": 0.185,
+            "y": 0.446,
+            "radius": 0.06
+          },
+          {
+            "part_id": "p005_tail",
+            "type": "tail",
+            "x": 0.777,
+            "y": 0.333,
+            "radius": 0.06
+          },
+          {
+            "part_id": "p005_paw",
+            "type": "paw",
+            "x": 0.384,
+            "y": 0.897,
+            "radius": 0.06
+          },
+          {
+            "part_id": "p005_ears",
+            "type": "ears",
+            "x": 0.513,
+            "y": 0.376,
+            "radius": 0.06
+          }
+        ]
       }
     },
     {
