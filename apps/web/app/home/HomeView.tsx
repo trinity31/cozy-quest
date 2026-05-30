@@ -10,6 +10,7 @@ import {
   getProgress,
   getSeasonSlots,
   pickActiveScene,
+  setProgress,
   type FurnitureCategory,
   type FurnitureOption,
   type Season,
@@ -152,6 +153,27 @@ export function HomeView({ season }: { season: Season }) {
     router.push('/');
   }
 
+  // dev: 가장 최근 받은 가구 1개만 되돌리기 (해당 씬의 hit/started 도 같이 제거)
+  function handlePopLatest() {
+    const progress = getProgress();
+    const seasonSlots = progress.home_slots.filter((s) => s.season_id === season.season_id);
+    if (seasonSlots.length === 0) return;
+    const latest = seasonSlots.reduce((a, b) => (a.chosen_at > b.chosen_at ? a : b));
+    const all = scenesData.scenes as Scene[];
+    const targetScene = all.find(
+      (s) => s.season_id === season.season_id && s.furniture_category === latest.category,
+    );
+    const partIds = new Set(targetScene?.cat.parts.map((p) => p.part_id) ?? []);
+    const nextStarted = { ...progress.scene_started_at };
+    if (targetScene) delete nextStarted[targetScene.scene_id];
+    setProgress({
+      home_slots: progress.home_slots.filter((s) => s !== latest),
+      hits: progress.hits.filter((h) => !partIds.has(h.part_id)),
+      scene_started_at: nextStarted,
+    });
+    router.push('/');
+  }
+
   return (
     <main className="relative flex-1 overflow-hidden bg-paper">
       <div className="relative mx-auto aspect-[9/16] w-full max-w-[480px]">
@@ -166,10 +188,10 @@ export function HomeView({ season }: { season: Season }) {
 
         {/* 발견한 카테고리만 합성. 미발견은 표시 X (사용자 결정) */}
         {FURNITURE_CATEGORIES.map((cat) => {
-          const slot = season.slots[cat];
-          if (!slot) return null;
           const item = chosen[cat];
           if (!item) return null;
+          const slot = item.option.slot_override ?? season.slots[cat];
+          if (!slot) return null;
           const rotation = SLOT_ROTATIONS[cat];
           const isLatest = cat === latestCat;
           return (
@@ -213,15 +235,26 @@ export function HomeView({ season }: { season: Season }) {
         </div>
         <div className="pointer-events-auto flex items-center gap-2">
           {isDev && (
-            <button
-              type="button"
-              onClick={handleReset}
-              aria-label="진척 리셋 (dev)"
-              title="진척 리셋 (dev)"
-              className="flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text"
-            >
-              <span className="text-base">↻</span>
-            </button>
+            <>
+              <button
+                type="button"
+                onClick={handlePopLatest}
+                aria-label="직전 가구 되돌리기 (dev)"
+                title="직전 가구 되돌리기 (dev)"
+                className="flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text"
+              >
+                <span className="text-base">⤺</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleReset}
+                aria-label="진척 리셋 (dev)"
+                title="진척 리셋 (dev)"
+                className="flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text"
+              >
+                <span className="text-base">↻</span>
+              </button>
+            </>
           )}
         </div>
       </header>

@@ -12,6 +12,8 @@ export interface FurnitureOption {
   id: string;
   name: string;
   image_url: string;
+  /** 이 옵션을 박을 때만 카테고리 슬롯을 이 좌표로 덮어쓴다 (예: 벽선반 vs 바닥 책장). */
+  slot_override?: SlotPosition;
 }
 
 export interface Cat {
