@@ -29,7 +29,7 @@ const CATEGORY_LABEL: Record<FurnitureCategory, string> = {
   rug: '🧺 러그',
   cushion: '🛋 쿠션',
   shelf: '📚 선반',
-  bed: '🛏 침대',
+  table: '🪵 테이블',
 };
 
 type CardStatus = 'completed' | 'available' | 'sequentialLocked' | 'comingSoon';

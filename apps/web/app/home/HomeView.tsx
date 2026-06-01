@@ -36,7 +36,7 @@ const SLOT_ROTATIONS: Record<FurnitureCategory, number> = {
   chair: -0.8,
   shelf: 0.5,
   lamp: 0,
-  bed: 1.0,
+  table: 1.0,
 };
 
 // 이 시즌에서 가장 최근에 박힌 카테고리 1개만 등장 spring 적용.

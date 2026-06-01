@@ -32,17 +32,17 @@ export type FurnitureCategory =
   | 'rug'
   | 'cushion'
   | 'shelf'
-  | 'bed';
+  | 'table';
 
-/** 카테고리 7종 = 시즌 슬롯 순서 (PRD GAME_RULES K.2). */
+/** 카테고리 7종. 배열 순서 = HomeView 합성 z-order (뒤→앞). */
 export const FURNITURE_CATEGORIES: FurnitureCategory[] = [
-  'lamp',
-  'chair',
-  'plant',
   'rug',
   'cushion',
+  'chair',
   'shelf',
-  'bed',
+  'plant',
+  'table',
+  'lamp',
 ];
 
 export interface Scene {
