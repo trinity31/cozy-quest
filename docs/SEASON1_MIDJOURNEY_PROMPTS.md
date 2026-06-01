@@ -77,14 +77,14 @@ Children's storybook illustration in the style of Beatrix Potter meets Studio Gh
 
 ---
 
-## Day 7 — 비 오는 처마 (`rainy_eaves_007`)
+## Day 7 — 장이 끝난 좌판 (`marketclose_late_007`)
 
 ```
-A cozy european street eaves view on a warm rainy day, viewed from slight top-down 3/4 isometric angle. Wet cobblestone with gentle ripples in puddles, cream walls #F5E5B8 with rain streaks, terracotta rooftops #D96B47 dripping water, wooden window shutters in sage #A8C49A half-closed, hanging brass lanterns glowing softly, potted plants on windowsills, a wooden bench under the eaves, an old umbrella leaning against the wall, scattered fallen leaves wet on ground, soft diffused rainy daylight. Gentle vertical rain lines. Many overlapping cozy elements under the dry shelter of the eaves, hiding spots between pots and shutters.
+A cozy european market view deep at night, well after midnight closing, viewed from slight top-down 3/4 isometric angle. Empty wooden market stalls with canvas covers folded down or rolled up, swept cobblestone ground #C9A98C with a few stray fallen leaves, cream walls #F5E5B8 muted by night, terracotta rooftops #D96B47 silhouetted against a near-black indigo night sky, a single small hanging lantern glowing warmly #E8C56C casts a small pool of light, empty wooden crates and woven baskets stacked beside a stall, a broom leaning against a post, half-closed wooden shutters in sage #A8C49A, dim moonlight from above. Most of the scene in deep shadow except the small pool of lantern light. Many overlapping cozy details — folded canvas, stacked baskets, hung tools, draped cloths — providing hiding spots for a small cat.
 
-Children's storybook illustration in the style of Beatrix Potter meets Studio Ghibli with the graphic clarity of Luke Pearson's "Hilda". Hand-drawn warm-brown ink linework #5C4128, line weight ~2px with slight organic wobble, rounded caps. Watercolor wash on visible cream paper grain, three tones per area, highlights as bare paper white. Mood: cozy rainy intimacy, peaceful petrichor.
+Children's storybook illustration in the style of Beatrix Potter meets Studio Ghibli with the graphic clarity of Luke Pearson's "Hilda". Hand-drawn warm-brown ink linework #5C4128, line weight ~2px with slight organic wobble, rounded caps. Watercolor wash on visible cream paper grain with a darkened nocturnal palette, three tones per area, highlights as bare paper white only inside the lantern's glow. Mood: midnight stillness, low-key lighting, single-lantern warmth in the dark.
 
---sref https://cdn.midjourney.com/5dc827af-f9c2-4a53-9137-c9500b0a400c/0_2.png --sw 1000 --ar 9:16 --style raw --niji 7 --no cats, animals, people, storm, lightning, modern objects, signs with text
+--sref https://cdn.midjourney.com/5dc827af-f9c2-4a53-9137-c9500b0a400c/0_2.png --sw 600 --ar 9:16 --style raw --niji 7 --no cats, animals, people, storm, modern objects, signs with text, neon, daylight, sunlit, bright sky, sunny atmosphere, midday
 ```
 
 ---
@@ -241,7 +241,44 @@ Children's storybook illustration in the style of Beatrix Potter meets Studio Gh
 
 ---
 
-## Day 6 · lamp (등불) 3종
+## Day 6 · table (테이블) 3종 🆕
+
+### table_01_round_caramel
+
+```
+A small round wooden side table with three slender turned legs, warm caramel wood tone #C97A3E, gentle wood grain visible on the round top, modest scale suitable for holding a lamp, simple handcrafted form.
+
+Children's storybook illustration in the style of Beatrix Potter meets Studio Ghibli with the graphic clarity of Luke Pearson's "Hilda". Hand-drawn warm-brown ink linework #5C4128, line weight ~2px with slight organic wobble, rounded caps. Watercolor wash on visible cream paper grain, three tones per area, highlights as bare paper white.
+
+3/4 front-side angle, single object centered, TRANSPARENT BACKGROUND, minimum 32px padding, soft watercolor base shadow only.
+--sref https://cdn.midjourney.com/5dc827af-f9c2-4a53-9137-c9500b0a400c/0_2.png --sw 1000 --ar 1:1 --style raw --niji 7 --no cat, animal, second object, scenery, text, drop shadow, 3D
+```
+
+### table_02_square_cream
+
+```
+A small square painted side table in soft cream #FAEFC8, four straight wooden legs, a sage green #A8C49A trim line along the top edge, modest scale with a flat clean top, handcrafted feel.
+
+Children's storybook illustration in the style of Beatrix Potter meets Studio Ghibli with the graphic clarity of Luke Pearson's "Hilda". Hand-drawn warm-brown ink linework #5C4128, line weight ~2px with slight organic wobble, rounded caps. Watercolor wash on visible cream paper grain, three tones per area, highlights as bare paper white.
+
+3/4 front-side angle, single object centered with crisp clean edges, TRANSPARENT BACKGROUND, minimum 32px padding, no ground shadow.
+--sref https://cdn.midjourney.com/5dc827af-f9c2-4a53-9137-c9500b0a400c/0_2.png --sw 1000 --ar 1:1 --style raw --niji 7 --no cat, animal, second object, scenery, text, drop shadow, 3D, ground shadow, background wash, color patches, watercolor splash
+```
+
+### table_03_terra_stool
+
+```
+A small terracotta painted stool-style side table #D96B47 with a flat circular top and a sturdy column base, soft hand-painted brushstroke texture, gentle cream highlights along the rim.
+
+Children's storybook illustration in the style of Beatrix Potter meets Studio Ghibli with the graphic clarity of Luke Pearson's "Hilda". Hand-drawn warm-brown ink linework #5C4128, line weight ~2px with slight organic wobble, rounded caps. Watercolor wash on visible cream paper grain, three tones per area, highlights as bare paper white.
+
+3/4 front-side angle, single object centered, TRANSPARENT BACKGROUND, minimum 32px padding, soft watercolor base shadow only.
+--sref https://cdn.midjourney.com/5dc827af-f9c2-4a53-9137-c9500b0a400c/0_2.png --sw 1000 --ar 1:1 --style raw --niji 7 --no cat, animal, second object, scenery, text, drop shadow, 3D
+```
+
+---
+
+## Day 7 · lamp (등불) 3종
 
 ### lamp_01_honey_classic
 
@@ -278,43 +315,6 @@ Children's storybook illustration in the style of Beatrix Potter meets Studio Gh
 
 ---
 
-## Day 7 · bed (침대) 3종 🆕
-
-### bed_01_rattan_round
-
-```
-A round woven rattan cat bed with a thick plump cream cushion #FAEFC8 inside, natural wicker tones #B69770, visible weave texture around the outer rim, gentle dome shape.
-
-Children's storybook illustration in the style of Beatrix Potter meets Studio Ghibli with the graphic clarity of Luke Pearson's "Hilda". Hand-drawn warm-brown ink linework #5C4128, line weight ~2px with slight organic wobble, rounded caps. Watercolor wash on visible cream paper grain, three tones per area, highlights as bare paper white.
-
-3/4 front-side angle, single object centered, TRANSPARENT BACKGROUND, minimum 32px padding, soft watercolor base shadow only.
---sref https://cdn.midjourney.com/5dc827af-f9c2-4a53-9137-c9500b0a400c/0_2.png --sw 1000 --ar 1:1 --style raw --niji 7 --no cat, animal, second object, scenery, text, drop shadow, 3D
-```
-
-### bed_02_canopy_cozy
-
-```
-A small fabric tent-style canopy cat bed in cream linen #F5E5B8, a sage green #A8C49A trim along the canopy edges, a soft cushion visible inside, gentle fabric drape.
-
-Children's storybook illustration in the style of Beatrix Potter meets Studio Ghibli with the graphic clarity of Luke Pearson's "Hilda". Hand-drawn warm-brown ink linework #5C4128, line weight ~2px with slight organic wobble, rounded caps. Watercolor wash on visible cream paper grain, three tones per area, highlights as bare paper white.
-
-3/4 front-side angle, single object centered, TRANSPARENT BACKGROUND, minimum 32px padding, soft watercolor base shadow only.
---sref https://cdn.midjourney.com/5dc827af-f9c2-4a53-9137-c9500b0a400c/0_2.png --sw 1000 --ar 1:1 --style raw --niji 7 --no cat, animal, second object, scenery, text, drop shadow, 3D
-```
-
-### bed_03_quilted_floor
-
-```
-A thick quilted floor bed pillow in terracotta #D96B47 with cream stitching in a soft diamond pattern, plump round shape, gentle compression at the center, visible quilted texture.
-
-Children's storybook illustration in the style of Beatrix Potter meets Studio Ghibli with the graphic clarity of Luke Pearson's "Hilda". Hand-drawn warm-brown ink linework #5C4128, line weight ~2px with slight organic wobble, rounded caps. Watercolor wash on visible cream paper grain, three tones per area, highlights as bare paper white.
-
-3/4 front-side angle, single object centered, TRANSPARENT BACKGROUND, minimum 32px padding, soft watercolor base shadow only.
---sref https://cdn.midjourney.com/5dc827af-f9c2-4a53-9137-c9500b0a400c/0_2.png --sw 1000 --ar 1:1 --style raw --niji 7 --no cat, animal, second object, scenery, text, drop shadow, 3D
-```
-
----
-
 # ✅ 체크리스트
 
 ## 배경 6장
@@ -323,15 +323,15 @@ Children's storybook illustration in the style of Beatrix Potter meets Studio Gh
 - [ ] Day 4 찻집 정원
 - [ ] Day 5 어물전 골목
 - [ ] Day 6 달빛 야시장
-- [ ] Day 7 비 오는 처마
+- [ ] Day 7 장이 끝난 좌판
 
 ## 가구 18장
 - [ ] cushion × 3
 - [ ] rug × 3
 - [ ] chair × 3
 - [ ] shelf × 3
+- [ ] table × 3
 - [ ] lamp × 3
-- [ ] bed × 3
 
 ---
 

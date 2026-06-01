@@ -364,36 +364,140 @@
       "motif": "nightmarket_moonlit",
       "difficulty": 3,
       "image_url": "/scenes/nightmarket_moonlit_006.png",
-      "release_date": "2099-01-01",
+      "release_date": "2026-06-01",
       "season_id": "season_001_cheese",
       "day_in_season": 6,
+      "furniture_category": "table",
+      "cat": {
+        "cat_id": "cat_001",
+        "name": "치즈",
+        "personality": "낮잠을 좋아하는",
+        "fullbody_image_url": "/cats/cat_001_fullbody.png",
+        "furniture_options": [
+          {
+            "id": "table_round_caramel",
+            "name": "라운드 우드 테이블",
+            "image_url": "/furniture/season_001/table_01_round_caramel.png"
+          },
+          {
+            "id": "table_square_cream",
+            "name": "크림 사각 테이블",
+            "image_url": "/furniture/season_001/table_02_square_cream.png"
+          },
+          {
+            "id": "table_terra_stool",
+            "name": "테라 스툴 테이블",
+            "image_url": "/furniture/season_001/table_03_terra_stool.png"
+          }
+        ],
+        "parts": [
+          {
+            "part_id": "p006_fullbody",
+            "type": "fullbody",
+            "x": 0.162,
+            "y": 0.716,
+            "radius": 0.06
+          },
+          {
+            "part_id": "p006_face",
+            "type": "face",
+            "x": 0.126,
+            "y": 0.576,
+            "radius": 0.06
+          },
+          {
+            "part_id": "p006_tail",
+            "type": "tail",
+            "x": 0.843,
+            "y": 0.485,
+            "radius": 0.06
+          },
+          {
+            "part_id": "p006_paw",
+            "type": "paw",
+            "x": 0.651,
+            "y": 0.632,
+            "radius": 0.06
+          },
+          {
+            "part_id": "p006_ears",
+            "type": "ears",
+            "x": 0.716,
+            "y": 0.379,
+            "radius": 0.06
+          }
+        ]
+      }
+    },
+    {
+      "scene_id": "marketclose_late_007",
+      "title": "장이 끝난 좌판",
+      "motif": "marketclose_late",
+      "difficulty": 3,
+      "image_url": "/scenes/marketclose_late_007.png",
+      "release_date": "2026-06-01",
+      "season_id": "season_001_cheese",
+      "day_in_season": 7,
       "furniture_category": "lamp",
       "cat": {
         "cat_id": "cat_001",
         "name": "치즈",
         "personality": "낮잠을 좋아하는",
         "fullbody_image_url": "/cats/cat_001_fullbody.png",
-        "furniture_options": [],
-        "parts": []
-      }
-    },
-    {
-      "scene_id": "rainyalley_007",
-      "title": "비 오는 골목",
-      "motif": "rainyalley",
-      "difficulty": 3,
-      "image_url": "/scenes/rainyalley_007.png",
-      "release_date": "2099-01-01",
-      "season_id": "season_001_cheese",
-      "day_in_season": 7,
-      "furniture_category": "bed",
-      "cat": {
-        "cat_id": "cat_001",
-        "name": "치즈",
-        "personality": "낮잠을 좋아하는",
-        "fullbody_image_url": "/cats/cat_001_fullbody.png",
-        "furniture_options": [],
-        "parts": []
+        "furniture_options": [
+          {
+            "id": "lamp_honey_classic",
+            "name": "허니 테이블 램프",
+            "image_url": "/furniture/season_001/lamp_01_honey_classic.png"
+          },
+          {
+            "id": "lamp_cream_paper",
+            "name": "크림 종이 등롱",
+            "image_url": "/furniture/season_001/lamp_02_cream_paper.png"
+          },
+          {
+            "id": "lamp_terra_brazier",
+            "name": "테라 화롯불",
+            "image_url": "/furniture/season_001/lamp_03_terra_brazier.png"
+          }
+        ],
+        "parts": [
+          {
+            "part_id": "p007_fullbody",
+            "type": "fullbody",
+            "x": 0.147,
+            "y": 0.55,
+            "radius": 0.06
+          },
+          {
+            "part_id": "p007_face",
+            "type": "face",
+            "x": 0.181,
+            "y": 0.677,
+            "radius": 0.06
+          },
+          {
+            "part_id": "p007_tail",
+            "type": "tail",
+            "x": 0.704,
+            "y": 0.797,
+            "radius": 0.06
+          },
+          {
+            "part_id": "p007_paw",
+            "type": "paw",
+            "x": 0.522,
+            "y": 0.295,
+            "radius": 0.06
+          },
+          {
+            "part_id": "p007_ears",
+            "type": "ears",
+            "x": 0.428,
+            "y": 0.533,
+            "radius": 0.06
+          }
+        ]
       }
     }
   ]

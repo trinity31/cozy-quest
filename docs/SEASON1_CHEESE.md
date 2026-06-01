@@ -255,24 +255,25 @@ hiding spots, dim but cozy.
 
 > 야간 = 명도 낮춤 + 등불 점등. 색 팔레트는 시즌 톤 유지.
 
-### Day 7 — 비 오는 처마 — `rainy_eaves_007`
+### Day 7 — 장이 끝난 좌판 — `marketclose_late_007`
 
 ```
-A cozy european street eaves view on a warm rainy day, viewed from
-slight top-down 3/4 isometric angle. Wet cobblestone with gentle ripples
-in puddles, cream walls #F5E5B8 with rain streaks, terracotta rooftops
-#D96B47 dripping water, wooden window shutters in sage #A8C49A
-half-closed, hanging brass lanterns glowing softly, potted plants
-on windowsills, a wooden bench under the eaves, an old umbrella
-leaning against the wall, scattered fallen leaves wet on ground,
-soft diffused rainy daylight. Gentle vertical rain lines. Many
-overlapping cozy elements under the dry shelter of the eaves,
-hiding spots between pots and shutters.
+A cozy european late-night market view after closing time, viewed from
+slight top-down 3/4 isometric angle. Empty wooden market stalls with
+canvas covers folded down or rolled up, swept cobblestone ground #C9A98C
+with a few stray fallen leaves, cream walls #F5E5B8, terracotta rooftops
+#D96B47 silhouetted against a deep indigo night sky, a single small
+hanging lantern glowing warmly #E8C56C casts a soft pool of light,
+empty wooden crates and woven baskets stacked beside a stall, a broom
+leaning against a post, half-closed wooden shutters in sage #A8C49A,
+gentle moonlight from above. Many overlapping cozy details — folded
+canvas, stacked baskets, hung tools, draped cloths — providing hiding
+spots for a small cat.
 
-[STYLE_PREFIX 풀버전 — mood: cozy rainy intimacy, peaceful petrichor]
+[STYLE_PREFIX 풀버전 — mood: quiet closing, end-of-day stillness, single-lantern warmth]
 
 --sref [Day 1 URL] --sw 1000 --ar 9:16 --style raw --v 7
---no cats, animals, people, storm, lightning, modern objects, signs with text
+--no cats, animals, people, storm, modern objects, signs with text, neon
 ```
 
 ---
@@ -545,7 +546,7 @@ z-order 기본: bed(1) → rug(2) → chair(3) → plant(4) → cushion(5) → s
 - [ ] Day 4 찻집 정원 배경 + chair 3 variant
 - [ ] Day 5 시장 골목 배경 + shelf 3 variant 🆕
 - [ ] Day 6 달빛 야시장 배경 + lamp 3 variant
-- [ ] Day 7 비 오는 처마 배경 + bed 3 variant 🆕
+- [ ] Day 7 장이 끝난 좌판 배경 + lamp 3 variant
 
 ### 6.3 총 자산 수
 
