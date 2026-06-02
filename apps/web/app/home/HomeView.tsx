@@ -125,22 +125,28 @@ export function HomeView({ season }: { season: Season }) {
         (h) => h.season_id === s.season_id && h.category === s.furniture_category,
       ),
     );
+
+    setHydrated(true);
+
+    // 마지막 가구 furniture-pop(500ms)이 끝나고 잠깐 음미한 뒤 Ending 띄움
+    let endingTimeoutId: number | undefined;
     if (playableScenes.length > 0 && completedPlayable.length === playableScenes.length) {
-      // 시즌 전체 sceneCount 추정 — scenes.json에서 같은 season_id 전체 (locked 포함)
       const seasonTotal = seasonScenes.length;
-      // 치즈 이름·이미지는 첫 씬에서 가져옴 (시즌 1마리 = 같은 cat)
       const cat = playableScenes[0]!.cat;
-      setEndingState({
-        catImage: cat.fullbody_image_url,
-        catName: cat.name,
-        seasonTotal,
-        playableCount: completedPlayable.length,
-      });
+      endingTimeoutId = window.setTimeout(() => {
+        setEndingState({
+          catImage: cat.fullbody_image_url,
+          catName: cat.name,
+          seasonTotal,
+          playableCount: completedPlayable.length,
+        });
+      }, 2400);
     } else {
       setEndingState(null);
     }
-
-    setHydrated(true);
+    return () => {
+      if (endingTimeoutId !== undefined) window.clearTimeout(endingTimeoutId);
+    };
   }, [season]);
 
   const filled = hydrated
@@ -222,7 +228,7 @@ export function HomeView({ season }: { season: Season }) {
         })}
       </div>
 
-      {/* 상단 헤더 — 진척 게이지 + 보조 풍경 링크 + dev 리셋 */}
+      {/* 상단 헤더 — 진척 게이지 */}
       <header className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between px-3 pt-3">
         <div className="pointer-events-auto rounded-card ink-line bg-[#FFFBF0]/95 px-3 py-2 backdrop-blur-md">
           <p className="font-book text-base font-bold text-cat-deep">
@@ -233,31 +239,31 @@ export function HomeView({ season }: { season: Season }) {
             <span className="text-text-faint">/{total} 완성</span>
           </p>
         </div>
-        <div className="pointer-events-auto flex items-center gap-2">
-          {isDev && (
-            <>
-              <button
-                type="button"
-                onClick={handlePopLatest}
-                aria-label="직전 가구 되돌리기 (dev)"
-                title="직전 가구 되돌리기 (dev)"
-                className="flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text"
-              >
-                <span className="text-base">⤺</span>
-              </button>
-              <button
-                type="button"
-                onClick={handleReset}
-                aria-label="진척 리셋 (dev)"
-                title="진척 리셋 (dev)"
-                className="flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text"
-              >
-                <span className="text-base">↻</span>
-              </button>
-            </>
-          )}
-        </div>
       </header>
+
+      {/* dev 리셋 — EndingOverlay(z-40) 위에 항상 보이도록 별도 레이어 */}
+      {isDev && (
+        <div className="pointer-events-none absolute right-3 top-3 z-50 flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handlePopLatest}
+            aria-label="직전 가구 되돌리기 (dev)"
+            title="직전 가구 되돌리기 (dev)"
+            className="pointer-events-auto flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text"
+          >
+            <span className="text-base">⤺</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            aria-label="진척 리셋 (dev)"
+            title="진척 리셋 (dev)"
+            className="pointer-events-auto flex h-10 w-10 items-center justify-center rounded-full ink-line bg-[#FFFBF0] text-text"
+          >
+            <span className="text-base">↻</span>
+          </button>
+        </div>
+      )}
 
       {/* 하단 CTA — 다음 풍경 진척 또는 시즌 완료 표시 */}
       {hydrated && (nextScene || allCleared) && (

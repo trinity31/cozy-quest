@@ -77,7 +77,7 @@ export function EndingOverlay({
 
       {/* 하단 카드 — 메시지 + 시즌 맵 + Coming Soon + CTA */}
       <div className="ink-line w-full max-w-[360px] rounded-modal bg-paper-soft p-5 text-center shadow-paper-3">
-        <h2 className="font-book text-3xl font-bold text-cat-deep">
+        <h2 className="whitespace-nowrap font-book text-2xl font-bold text-cat-deep">
           {headline}
         </h2>
         <p className="mt-1 font-sans text-cap text-text-soft">
@@ -119,7 +119,7 @@ export function EndingOverlay({
             onClick={handleClose}
             className="flex-1 rounded-full ink-line bg-[#FFFBF0] py-2.5 font-sans text-cap font-semibold text-text active:bg-paper"
           >
-            다시 보기
+            닫기
           </button>
           <button
             type="button"
