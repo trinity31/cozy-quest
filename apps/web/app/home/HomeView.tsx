@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   FURNITURE_CATEGORIES,
   clearProgress,
@@ -15,11 +15,11 @@ import {
   type FurnitureOption,
   type Season,
   type UserProgress,
-} from '@cozy-quest/shared';
-import scenesData from '@/public/data/scenes.json';
-import type { Scene } from '@cozy-quest/shared';
-import { EndingOverlay } from './EndingOverlay';
-import { ImageWithSpinner } from '../ImageWithSpinner';
+} from "@cozy-quest/shared";
+import scenesData from "@/public/data/scenes.json";
+import type { Scene } from "@cozy-quest/shared";
+import { EndingOverlay } from "./EndingOverlay";
+import { ImageWithSpinner } from "../ImageWithSpinner";
 
 interface ChosenItem {
   category: FurnitureCategory;
@@ -45,7 +45,7 @@ function pickLatestCategory(
   seasonId: string,
 ): FurnitureCategory | null {
   let latest: FurnitureCategory | null = null;
-  let latestAt = '';
+  let latestAt = "";
   for (const s of progress.home_slots) {
     if (s.season_id !== seasonId) continue;
     if (s.chosen_at > latestAt) {
@@ -72,17 +72,21 @@ function buildChosenMap(
     const slot = slotsByCategory[cat];
     if (!slot) continue;
     const scene = seasonScenes.find((s) => s.furniture_category === cat);
-    const option = scene?.cat.furniture_options.find((o) => o.id === slot.furniture_id);
+    const option = scene?.cat.furniture_options.find(
+      (o) => o.id === slot.furniture_id,
+    );
     if (option) result[cat] = { category: cat, option };
   }
   return result;
 }
 
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = process.env.NODE_ENV === "development";
 
 export function HomeView({ season }: { season: Season }) {
   const router = useRouter();
-  const [chosen, setChosen] = useState<Partial<Record<FurnitureCategory, ChosenItem>>>({});
+  const [chosen, setChosen] = useState<
+    Partial<Record<FurnitureCategory, ChosenItem>>
+  >({});
   const [nextScene, setNextScene] = useState<Scene | null>(null);
   const [allCleared, setAllCleared] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -105,14 +109,16 @@ export function HomeView({ season }: { season: Season }) {
     setLatestCat(pickLatestCategory(progress, season.season_id));
 
     // 다음 진척 풍경 계산 (이 시즌 안에서 미클리어 + release 도래한 가장 이른 씬)
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
     const seasonScenes = (scenesData.scenes as Scene[]).filter(
       (s) => s.season_id === season.season_id,
     );
     const active = pickActiveScene(seasonScenes, progress, today);
     if (active) {
       const slotted = progress.home_slots.some(
-        (h) => h.season_id === active.season_id && h.category === active.furniture_category,
+        (h) =>
+          h.season_id === active.season_id &&
+          h.category === active.furniture_category,
       );
       // 미클리어인 활성 씬이면 next, 모두 클리어 상태면 null
       setNextScene(slotted ? null : active);
@@ -123,7 +129,8 @@ export function HomeView({ season }: { season: Season }) {
     const playableScenes = seasonScenes.filter((s) => s.release_date <= today);
     const completedPlayable = playableScenes.filter((s) =>
       progress.home_slots.some(
-        (h) => h.season_id === s.season_id && h.category === s.furniture_category,
+        (h) =>
+          h.season_id === s.season_id && h.category === s.furniture_category,
       ),
     );
 
@@ -131,7 +138,10 @@ export function HomeView({ season }: { season: Season }) {
 
     // 마지막 가구 furniture-pop(500ms)이 끝나고 잠깐 음미한 뒤 Ending 띄움
     let endingTimeoutId: number | undefined;
-    if (playableScenes.length > 0 && completedPlayable.length === playableScenes.length) {
+    if (
+      playableScenes.length > 0 &&
+      completedPlayable.length === playableScenes.length
+    ) {
       const seasonTotal = seasonScenes.length;
       const cat = playableScenes[0]!.cat;
       endingTimeoutId = window.setTimeout(() => {
@@ -157,18 +167,24 @@ export function HomeView({ season }: { season: Season }) {
 
   function handleReset() {
     clearProgress();
-    router.push('/');
+    router.push("/");
   }
 
   // dev: 가장 최근 받은 가구 1개만 되돌리기 (해당 씬의 hit/started 도 같이 제거)
   function handlePopLatest() {
     const progress = getProgress();
-    const seasonSlots = progress.home_slots.filter((s) => s.season_id === season.season_id);
+    const seasonSlots = progress.home_slots.filter(
+      (s) => s.season_id === season.season_id,
+    );
     if (seasonSlots.length === 0) return;
-    const latest = seasonSlots.reduce((a, b) => (a.chosen_at > b.chosen_at ? a : b));
+    const latest = seasonSlots.reduce((a, b) =>
+      a.chosen_at > b.chosen_at ? a : b,
+    );
     const all = scenesData.scenes as Scene[];
     const targetScene = all.find(
-      (s) => s.season_id === season.season_id && s.furniture_category === latest.category,
+      (s) =>
+        s.season_id === season.season_id &&
+        s.furniture_category === latest.category,
     );
     const partIds = new Set(targetScene?.cat.parts.map((p) => p.part_id) ?? []);
     const nextStarted = { ...progress.scene_started_at };
@@ -178,7 +194,7 @@ export function HomeView({ season }: { season: Season }) {
       hits: progress.hits.filter((h) => !partIds.has(h.part_id)),
       scene_started_at: nextStarted,
     });
-    router.push('/');
+    router.push("/");
   }
 
   return (
@@ -205,16 +221,16 @@ export function HomeView({ season }: { season: Season }) {
             <div
               key={cat}
               aria-label={item.option.name}
-              className={`absolute ${isLatest ? 'animate-furniture-pop' : ''}`}
+              className={`absolute ${isLatest ? "animate-furniture-pop" : ""}`}
               style={{
                 left: `${(slot.x - slot.w / 2) * 100}%`,
                 top: `${(slot.y - slot.h / 2) * 100}%`,
                 width: `${slot.w * 100}%`,
                 height: `${slot.h * 100}%`,
                 // --slot-rot: keyframe(furniture-pop)에서 rotate 유지용
-                ['--slot-rot' as never]: `${rotation}deg`,
+                ["--slot-rot" as never]: `${rotation}deg`,
                 transform: `rotate(${rotation}deg)`,
-                transformOrigin: 'center',
+                transformOrigin: "center",
               }}
             >
               <Image
@@ -234,10 +250,10 @@ export function HomeView({ season }: { season: Season }) {
             aria-label={`${season.title} — 잠자는 치즈`}
             className="absolute animate-breathing"
             style={{
-              left: '37%',
-              top: '72%',
-              width: '24%',
-              height: '14%',
+              left: "50%",
+              top: "70%",
+              width: "21%",
+              height: "15%",
             }}
           >
             <Image
