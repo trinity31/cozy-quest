@@ -315,6 +315,25 @@ Children's storybook illustration in the style of Beatrix Potter meets Studio Gh
 
 ---
 
+# 🐱 SECTION C — 시즌 클리어 보상 자산
+
+## cat_001_sleeping (러그 위에서 잠자는 치즈) 🆕
+
+> 시즌 7/7 클리어 후 홈 화면 러그 슬롯 위에 합성. EndingOverlay 닫은 뒤 보금자리 회상 모드에서 항상 노출.
+
+```
+A small orange tabby cat curled up sleeping peacefully on its side, eyes gently closed with content smile, soft round belly, paws tucked in front, tail curled around the body, two small light gray "Z" sleep marks floating just above the head, breathing softly.
+
+Children's storybook illustration in the style of Beatrix Potter meets Studio Ghibli with the graphic clarity of Luke Pearson's "Hilda". Hand-drawn warm-brown ink linework #5C4128, line weight ~2px with slight organic wobble, rounded caps. Watercolor wash on visible cream paper grain, three tones per area, highlights as bare paper white. Same orange tabby coloring #E8945C with cream belly #FAEFC8 as the existing Cheese cat character.
+
+Side view, single object centered, TRANSPARENT BACKGROUND, minimum 32px padding, soft watercolor base shadow only.
+--sref https://cdn.midjourney.com/5dc827af-f9c2-4a53-9137-c9500b0a400c/0_2.png --sw 1000 --ar 1:1 --style raw --niji 7 --no cat standing, sitting upright, full body upright, scenery, text, drop shadow, 3D, second cat
+```
+
+저장 위치: `apps/web/public/cats/cat_001_sleeping.png`
+
+---
+
 # ✅ 체크리스트
 
 ## 배경 6장
@@ -332,6 +351,9 @@ Children's storybook illustration in the style of Beatrix Potter meets Studio Gh
 - [ ] shelf × 3
 - [ ] table × 3
 - [ ] lamp × 3
+
+## 시즌 클리어 보상
+- [ ] cat_001_sleeping (러그 위 자는 치즈)
 
 ---
 

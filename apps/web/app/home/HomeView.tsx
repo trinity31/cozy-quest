@@ -86,6 +86,7 @@ export function HomeView({ season }: { season: Season }) {
   const [nextScene, setNextScene] = useState<Scene | null>(null);
   const [allCleared, setAllCleared] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const [sleepingCatError, setSleepingCatError] = useState(false);
   const [latestCat, setLatestCat] = useState<FurnitureCategory | null>(null);
   // 기획서 §5 [8] Ending — 현재 playable 씬을 모두 완료했을 때 표시.
   // 한 세션 내에서 닫고 다시 보기 가능; 새로고침/재방문 시 다시 등장.
@@ -226,6 +227,29 @@ export function HomeView({ season }: { season: Season }) {
             </div>
           );
         })}
+
+        {/* 시즌 완료 보상 — 러그 위에서 자는 치즈. 자산 없으면 onError로 숨김. */}
+        {hydrated && allCleared && !sleepingCatError && (
+          <div
+            aria-label={`${season.title} — 잠자는 치즈`}
+            className="absolute animate-breathing"
+            style={{
+              left: '37%',
+              top: '72%',
+              width: '24%',
+              height: '14%',
+            }}
+          >
+            <Image
+              src={`/cats/${season.cat_id}_sleeping.png`}
+              alt="잠자는 치즈"
+              fill
+              sizes="160px"
+              className="object-contain drop-shadow-[0_3px_4px_rgba(92,65,40,0.25)]"
+              onError={() => setSleepingCatError(true)}
+            />
+          </div>
+        )}
       </div>
 
       {/* 상단 헤더 — 진척 게이지 */}
