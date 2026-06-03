@@ -19,8 +19,21 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://cozy-quest-web.vercel.app'),
   title: 'Cozy Quest',
   description: '매일 풍경 1장에 숨은 고양이 1마리를 5번 탭으로 발견하고, 보금자리를 채우는 코지 발견 게임.',
+  // title/description은 openGraph·twitter에서 자동 상속됨 (Next.js metadata)
+  openGraph: {
+    type: 'website',
+    siteName: 'Cozy Quest',
+    locale: 'ko_KR',
+    url: '/',
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Cozy Quest' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/og.png'],
+  },
 };
 
 export const viewport: Viewport = {
